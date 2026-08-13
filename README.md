@@ -1,47 +1,42 @@
-# LaTeXdex
+# sv
 
-The free and open-source LaTeX database
+Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
-## Table of Contents
+## Creating a project
 
-1. [Getting Started](#getting-started)
-    1. [Installation](#installation)
-2. [Tech Stack](#tech-stack)
-3. [License](#license)
-
-## Getting Started
-
-### Installation
-
-[Drizzle | How to setup PostgreSQL locally](https://orm.drizzle.team/docs/guides/postgresql-local-setup)
-
-#### 1. Pull the PostgreSQL image
+If you're seeing this, you've probably already done this step. Congrats!
 
 ```sh
-docker pull postgres
+# create a new project
+npx sv create my-app
 ```
 
-#### 2. Start a Postgres instance
+To recreate this project with the same configuration:
 
 ```sh
-docker run --name drizzle-postgres -e POSTGRES_PASSWORD=mypassword -d -p 5432:5432 postgres
+# recreate this project
+bun x sv@1.0.0-next.1 create --template minimal --types ts --add tailwindcss="plugins:none" sveltekit-adapter="adapter:auto" drizzle="database:postgresql+postgresql:postgres.js+docker:yes" better-auth="demo:password,github" --install bun .
 ```
 
-#### 3. Configure database url
+## Developing
 
-`.env`
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```sh
-# Drizzle ORM
-DATABASE_URL=postgres://postgres:mypassword@localhost:5432/postgres
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
 
-## Tech Stack
+## Building
 
-* Next.js
-* Prisma + PostgreSQL
-* Better Auth
+To create a production version of your app:
 
-## License
+```sh
+npm run build
+```
 
-[MIT](LICENSE.txt)
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
