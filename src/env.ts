@@ -8,6 +8,10 @@ export const variables = defineEnvVars({
   GITHUB_CLIENT_SECRET: {},
   GOOGLE_CLIENT_ID: {},
   GOOGLE_CLIENT_SECRET: {},
+  SMTP_HOST: {},
+  SMTP_PORT: {},
+  SMTP_USERNAME: {},
+  SMTP_PASSWORD: {},
   STRIPE_SECRET_KEY: {},
   STRIPE_WEBHOOK_SECRET: {},
 });
