@@ -1,22 +1,14 @@
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { stripe } from "@better-auth/stripe";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { betterAuth } from "better-auth/minimal";
-import { emailOTP } from "better-auth/plugins";
+import { emailOTP, username } from "better-auth/plugins";
 import { sveltekitCookies } from "better-auth/svelte-kit";
 import Stripe from "stripe";
 import { db } from "#lib/server/db/drizzle.ts";
-import {
-  GITHUB_CLIENT_ID,
-  GITHUB_CLIENT_SECRET,
-  GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET,
-  STRIPE_SECRET_KEY,
-  STRIPE_WEBHOOK_SECRET,
-} from "$app/env/private";
+import { sendEmail } from "#lib/server/email.ts";
 import { getRequestEvent } from "$app/server";
-import { sendEmail } from "./email";
 
-const stripeClient = new Stripe(STRIPE_SECRET_KEY, {
+const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2026-07-29.dahlia",
 });
 
@@ -29,12 +21,12 @@ export const auth = betterAuth({
   },
   socialProviders: {
     github: {
-      clientId: GITHUB_CLIENT_ID,
-      clientSecret: GITHUB_CLIENT_SECRET,
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
     google: {
-      clientId: GOOGLE_CLIENT_ID,
-      clientSecret: GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
   plugins: [
@@ -66,9 +58,10 @@ export const auth = betterAuth({
     }),
     stripe({
       stripeClient,
-      stripeWebhookSecret: STRIPE_WEBHOOK_SECRET,
+      stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET as string,
       createCustomerOnSignUp: true,
     }),
+    username(),
     sveltekitCookies(getRequestEvent),
   ],
 });
