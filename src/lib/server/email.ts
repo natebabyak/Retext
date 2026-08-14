@@ -1,11 +1,17 @@
 import nodemailer from "nodemailer";
+import {
+  SMTP_HOST,
+  SMTP_PASSWORD,
+  SMTP_PORT,
+  SMTP_USERNAME,
+} from "$app/env/private";
 
 export const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
+  host: SMTP_HOST,
+  port: SMTP_PORT,
   auth: {
-    user: process.env.SMTP_USERNAME,
-    pass: process.env.SMTP_PASSWORD,
+    user: SMTP_USERNAME,
+    pass: SMTP_PASSWORD,
   },
 });
 

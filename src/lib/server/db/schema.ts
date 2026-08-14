@@ -1,5 +1,6 @@
 import { defineRelations, sql } from "drizzle-orm";
 import {
+  date,
   index,
   integer,
   pgEnum,
@@ -11,30 +12,34 @@ import {
 } from "drizzle-orm/pg-core";
 import { user } from "./auth.schema";
 
-export const snippetLanguage = pgEnum("snippet_language", ["markdown", "tex"]);
+export const artifactLanguage = pgEnum("artifact_language", [
+  "latex",
+  "markdown",
+]);
 
-export const snippetType = pgEnum("snippet_type", [
+export const artifactType = pgEnum("artifact_type", [
   "prompt",
   "skill",
   "snippet",
   "template",
 ]);
 
-export const snippet = snakeCase.table(
-  "snippet",
+export const artifact = snakeCase.table(
+  "artifact",
   {
     id: uuid()
       .primaryKey()
       .default(sql`uuidv7()`),
-    authorId: text()
+    userId: text()
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     title: text().notNull(),
     description: text(),
-    language: snippetLanguage().notNull(),
-    type: snippetType().notNull(),
+    language: artifactLanguage().notNull(),
+    type: artifactType().notNull(),
     content: text().notNull(),
-    usageCount: integer().notNull().default(0),
+    downloadCount: integer().notNull().default(0),
+    starCount: integer().notNull().default(0),
     createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp({ withTimezone: true })
       .notNull()
@@ -42,61 +47,104 @@ export const snippet = snakeCase.table(
       .$onUpdate(() => new Date()),
   },
   (table) => [
-    index("snippet_author_id_idx").on(table.authorId),
-    index("snippet_language_idx").on(table.language),
-    index("snippet_type_idx").on(table.type),
+    index("artifact_user_id_idx").on(table.userId),
+    index("artifact_language_idx").on(table.language),
+    index("artifact_type_idx").on(table.type),
   ],
+);
+
+export const dailyDownloadCount = snakeCase.table(
+  "daily_download_count",
+  {
+    artifactId: uuid()
+      .notNull()
+      .references(() => artifact.id, { onDelete: "cascade" }),
+    date: date()
+      .notNull()
+      .default(sql`CURRENT_DATE`),
+    count: integer().notNull().default(0),
+  },
+  (table) => [primaryKey({ columns: [table.artifactId, table.date] })],
 );
 
 export const tag = snakeCase.table("tag", {
   id: uuid()
     .primaryKey()
     .default(sql`uuidv7()`),
-  value: text().notNull().unique(),
+  text: text().notNull().unique(),
 });
 
-export const snippetsToTags = snakeCase.table(
-  "snippets_to_tags",
+export const artifactsToTags = snakeCase.table(
+  "artifacts_to_tags",
   {
-    snippetId: uuid()
+    artifactId: uuid()
       .notNull()
-      .references(() => snippet.id, { onDelete: "cascade" }),
+      .references(() => artifact.id, { onDelete: "cascade" }),
     tagId: uuid()
       .notNull()
       .references(() => tag.id, { onDelete: "cascade" }),
   },
-  (table) => [primaryKey({ columns: [table.snippetId, table.tagId] })],
+  (table) => [primaryKey({ columns: [table.artifactId, table.tagId] })],
 );
 
-export const snippetsToUsers = snakeCase.table(
-  "snippets_to_users",
+export const artifactsToUsers = snakeCase.table(
+  "artifacts_to_users",
   {
-    snippetId: uuid()
+    artifactId: uuid()
       .notNull()
-      .references(() => snippet.id, { onDelete: "cascade" }),
+      .references(() => artifact.id, { onDelete: "cascade" }),
     userId: text()
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
-    createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [primaryKey({ columns: [table.snippetId, table.userId] })],
+  (table) => [primaryKey({ columns: [table.artifactId, table.userId] })],
 );
 
 export const relations = defineRelations(
-  { snippet, tag, user, snippetsToTags, snippetsToUsers },
+  {
+    artifact,
+    dailyDownloadCount,
+    tag,
+    user,
+    artifactsToTags,
+    artifactsToUsers,
+  },
   (r) => ({
-    snippet: {
+    artifact: {
       author: r.one.user({
-        from: r.snippet.authorId,
+        from: r.artifact.userId,
         to: r.user.id,
+        alias: "artifact_author",
+      }),
+      dailyDownloadCounts: r.many.dailyDownloadCount(),
+      starredBy: r.many.user({
+        from: r.artifact.id.through(r.artifactsToUsers.artifactId),
+        to: r.user.id.through(r.artifactsToUsers.userId),
+        alias: "artifact_starred_by",
       }),
       tags: r.many.tag({
-        from: r.snippet.id.through(r.snippetsToTags.snippetId),
-        to: r.tag.id.through(r.snippetsToTags.tagId),
+        from: r.artifact.id.through(r.artifactsToTags.artifactId),
+        to: r.tag.id.through(r.artifactsToTags.tagId),
+      }),
+    },
+    dailyDownloadCount: {
+      artifact: r.one.artifact({
+        from: r.dailyDownloadCount.artifactId,
+        to: r.artifact.id,
       }),
     },
     tag: {
-      snippets: r.many.snippet(),
+      artifacts: r.many.artifact(),
+    },
+    user: {
+      authoredArtifacts: r.many.artifact({
+        alias: "artifact_author",
+      }),
+      starredArtifacts: r.many.artifact({
+        alias: "artifact_starred_by",
+      }),
     },
   }),
 );
+
+export * from "./auth.schema";

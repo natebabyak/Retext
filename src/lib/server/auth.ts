@@ -6,9 +6,17 @@ import { sveltekitCookies } from "better-auth/svelte-kit";
 import Stripe from "stripe";
 import { db } from "#lib/server/db/drizzle.ts";
 import { sendEmail } from "#lib/server/email.ts";
+import {
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  STRIPE_SECRET_KEY,
+  STRIPE_WEBHOOK_SECRET,
+} from "$app/env/private";
 import { getRequestEvent } from "$app/server";
 
-const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+const stripeClient = new Stripe(STRIPE_SECRET_KEY, {
   apiVersion: "2026-07-29.dahlia",
 });
 
@@ -21,12 +29,12 @@ export const auth = betterAuth({
   },
   socialProviders: {
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+      clientId: GITHUB_CLIENT_ID,
+      clientSecret: GITHUB_CLIENT_SECRET,
     },
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
     },
   },
   plugins: [
@@ -58,10 +66,15 @@ export const auth = betterAuth({
     }),
     stripe({
       stripeClient,
-      stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET as string,
+      stripeWebhookSecret: STRIPE_WEBHOOK_SECRET,
       createCustomerOnSignUp: true,
     }),
     username(),
     sveltekitCookies(getRequestEvent),
   ],
+  advanced: {
+    database: {
+      joins: true,
+    },
+  },
 });
