@@ -1,56 +1,77 @@
 <script lang="ts">
-import { Button } from "#lib/components/ui/button/index.ts";
+import { Button, type ButtonVariant } from "#lib/components/ui/button/index.ts";
 import * as Card from "#lib/components/ui/card/index.ts";
+
+interface Plan {
+  title: string;
+  description: string;
+  price: string;
+  href: string;
+  variant: ButtonVariant;
+  buttonText: string;
+  features: Array<string>;
+}
+
+const PLANS = [
+  {
+    title: "Free",
+    description: "Get started with LaTeXdex",
+    price: "0",
+    href: "/sign-up",
+    variant: "outline",
+    buttonText: "Get started for free",
+    features: ["10 projects"],
+  },
+  {
+    title: "Pro",
+    description: "For everyday productivity",
+    price: "25",
+    href: "/sign-up",
+    variant: "default",
+    buttonText: "Upgrade to Pro",
+    features: ["Unlimited projects"],
+  },
+  {
+    title: "Max",
+    description: "",
+    price: "50",
+    href: "/sign-up",
+    variant: "outline",
+    buttonText: "Upgrade to Max",
+    features: [""],
+  },
+] satisfies Array<Plan>;
 </script>
 
-<main class="grid grid-cols-3 gap-4 p-4">
-	<Card.Root>
-		<Card.Header>
-			<Card.Title>Free</Card.Title>
-			<Card.Description></Card.Description>
-		</Card.Header>
-		<Card.Content>
-			<Button variant="outline" class="w-full">Get started for free</Button>
-		</Card.Content>
-		<Card.Footer>
-			<ul>
-				<li></li>
-			</ul>
-		</Card.Footer>
-	</Card.Root>
-	<Card.Root>
-		<Card.Header>
-			<Card.Title>Pro</Card.Title>
-			<Card.Description>For power users</Card.Description>
-		</Card.Header>
-		<Card.Content>
-			<div>
-				<span class="text-3xl tracking-tighter font-medium">$20</span>
-				<span class="text-xs text-muted-foreground">/mo</span>
-			</div>
-			<Button class="w-full">Upgrade to Pro</Button>
-		</Card.Content>
-		<Card.Footer>
-			<ul>
-				<li>Unlimited projects</li>
-				<li>Real-time collaboration</li>
-			</ul>
-		</Card.Footer>
-	</Card.Root>
-	<Card.Root>
-		<Card.Header>
-			<Card.Title>Max</Card.Title>
-			<Card.Description>For</Card.Description>
-		</Card.Header>
-		<Card.Content>
-			<div>
-				<span class="text-3xl tracking-tighter font-medium">$50</span>
-				<span class="text-xs text-muted-foreground">/mo</span>
-			</div>
-			<Button variant="outline" class="w-full">Upgrade to Max</Button>
-		</Card.Content>
-		<Card.Footer>
-			<ul></ul>
-		</Card.Footer>
-	</Card.Root>
+<main>
+  <h1>Pricing</h1>
+  <ul class="grid grid-cols-1 md:grid-cols-3 p-4 gap-4">
+    {#each PLANS as { title, description, price, href, variant, buttonText, features }}
+      <li>
+        <Card.Root class="max-w-xs">
+          <Card.Header>
+            <Card.Title>{title}</Card.Title>
+            <Card.Description>{description}</Card.Description>
+          </Card.Header>
+          <Card.Content>
+            <span class="font-medium tracking-tighter text-3xl">
+              ${price}
+            </span>
+            <span class="text-muted-foreground">/ mo</span>
+            <Button {href} {variant} class="w-full">
+              {buttonText}
+            </Button>
+          </Card.Content>
+          <Card.Footer>
+            <p></p>
+            <ul>
+              {#each features as feature}
+                <li>{feature}</li>
+              {/each}
+            </ul>
+          </Card.Footer>
+        </Card.Root>
+      </li>
+    {/each}
+  </ul>
 </main>

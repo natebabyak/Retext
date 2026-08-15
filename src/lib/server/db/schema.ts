@@ -8,21 +8,13 @@ import {
   snakeCase,
   text,
   timestamp,
+  unique,
   uuid,
 } from "drizzle-orm/pg-core";
+import { ARTIFACT_TYPES } from "#lib/constants.ts";
 import { user } from "./auth.schema";
 
-export const artifactLanguage = pgEnum("artifact_language", [
-  "latex",
-  "markdown",
-]);
-
-export const artifactType = pgEnum("artifact_type", [
-  "prompt",
-  "skill",
-  "snippet",
-  "template",
-]);
+export const artifactType = pgEnum("artifact_type", ARTIFACT_TYPES);
 
 export const artifact = snakeCase.table(
   "artifact",
@@ -35,9 +27,7 @@ export const artifact = snakeCase.table(
       .references(() => user.id, { onDelete: "cascade" }),
     title: text().notNull(),
     description: text(),
-    language: artifactLanguage().notNull(),
     type: artifactType().notNull(),
-    content: text().notNull(),
     downloadCount: integer().notNull().default(0),
     starCount: integer().notNull().default(0),
     createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
@@ -48,14 +38,18 @@ export const artifact = snakeCase.table(
   },
   (table) => [
     index("artifact_user_id_idx").on(table.userId),
-    index("artifact_language_idx").on(table.language),
     index("artifact_type_idx").on(table.type),
+    index("artifact_download_count_idx").on(table.downloadCount),
+    index("artifact_star_count_idx").on(table.starCount),
   ],
 );
 
 export const dailyDownloadCount = snakeCase.table(
   "daily_download_count",
   {
+    id: uuid()
+      .primaryKey()
+      .default(sql`uuidv7()`),
     artifactId: uuid()
       .notNull()
       .references(() => artifact.id, { onDelete: "cascade" }),
@@ -64,14 +58,29 @@ export const dailyDownloadCount = snakeCase.table(
       .default(sql`CURRENT_DATE`),
     count: integer().notNull().default(0),
   },
-  (table) => [primaryKey({ columns: [table.artifactId, table.date] })],
+  (table) => [unique().on(table.artifactId, table.date)],
+);
+
+export const file = snakeCase.table(
+  "file",
+  {
+    id: uuid()
+      .primaryKey()
+      .default(sql`uuidv7()`),
+    artifactId: uuid()
+      .notNull()
+      .references(() => artifact.id, { onDelete: "cascade" }),
+    path: text().notNull(),
+    content: text().notNull(),
+  },
+  (table) => [unique().on(table.artifactId, table.path)],
 );
 
 export const tag = snakeCase.table("tag", {
   id: uuid()
     .primaryKey()
     .default(sql`uuidv7()`),
-  text: text().notNull().unique(),
+  content: text().notNull().unique(),
 });
 
 export const artifactsToTags = snakeCase.table(
@@ -104,6 +113,7 @@ export const relations = defineRelations(
   {
     artifact,
     dailyDownloadCount,
+    file,
     tag,
     user,
     artifactsToTags,
@@ -117,6 +127,7 @@ export const relations = defineRelations(
         alias: "artifact_author",
       }),
       dailyDownloadCounts: r.many.dailyDownloadCount(),
+      files: r.many.file(),
       starredBy: r.many.user({
         from: r.artifact.id.through(r.artifactsToUsers.artifactId),
         to: r.user.id.through(r.artifactsToUsers.userId),
@@ -130,6 +141,12 @@ export const relations = defineRelations(
     dailyDownloadCount: {
       artifact: r.one.artifact({
         from: r.dailyDownloadCount.artifactId,
+        to: r.artifact.id,
+      }),
+    },
+    file: {
+      artifact: r.one.artifact({
+        from: r.file.artifactId,
         to: r.artifact.id,
       }),
     },
