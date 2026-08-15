@@ -1,7 +1,24 @@
 <script lang="ts">
-import { authClient } from "#lib/auth-client.ts";
+import { basicSetup, EditorView } from "codemirror";
+import { latex } from "codemirror-lang-latex";
+import { onDestroy, onMount } from "svelte";
 
-const session = authClient.useSession();
+let editorContainer: HTMLDivElement;
+let view: EditorView;
+
+onMount(() => {
+  view = new EditorView({
+    doc: "Start document",
+    parent: editorContainer,
+    extensions: [basicSetup, latex()],
+  });
+});
+
+onDestroy(() => {
+  if (view) {
+    view.destroy();
+  }
+});
 </script>
 
-<h1>Coming soon</h1>
+<div bind:this={editorContainer}></div>

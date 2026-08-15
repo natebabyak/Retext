@@ -1,4 +1,6 @@
 <script lang="ts">
+import Footer from "#lib/components/footer.svelte";
+import Header from "#lib/components/header.svelte";
 import { Button, type ButtonVariant } from "#lib/components/ui/button/index.ts";
 import * as Card from "#lib/components/ui/card/index.ts";
 
@@ -43,6 +45,7 @@ const PLANS = [
 ] satisfies Array<Plan>;
 </script>
 
+<Header />
 <main>
   <h1>Pricing</h1>
   <ul class="grid grid-cols-1 md:grid-cols-3 p-4 gap-4">
@@ -75,3 +78,4 @@ const PLANS = [
     {/each}
   </ul>
 </main>
+<Footer />

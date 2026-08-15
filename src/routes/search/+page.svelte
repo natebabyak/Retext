@@ -9,17 +9,19 @@ import * as Card from "#lib/components/ui/card/index.ts";
 import * as Empty from "#lib/components/ui/empty/index.ts";
 import * as InputGroup from "#lib/components/ui/input-group/index.ts";
 import { Skeleton } from "#lib/components/ui/skeleton/index.ts";
+import * as ToggleGroup from "#lib/components/ui/toggle-group/index.ts";
+import { ARTIFACT_TYPES } from "#lib/constants.ts";
 import { getArtifacts } from "./artifacts.remote";
 
 let q = $state("");
 </script>
 
-<div class="min-h-screen">
+<div class="min-h-screen flex flex-col">
   <Header />
   <main class="flex-1">
     <div class="max-w-xs w-full mx-auto sticky top-4 gap-2 flex">
       <InputGroup.Root>
-        <InputGroup.Input placeholder="Search anything..." bind:value={q} />
+        <InputGroup.Input placeholder="Search artifacts..." bind:value={q} />
         <InputGroup.Addon>
           <SearchIcon />
         </InputGroup.Addon>
@@ -28,11 +30,21 @@ let q = $state("");
         <Funnel />
       </Button>
     </div>
+    <ToggleGroup.Root size="sm" spacing={2} type="single" variant="outline">
+      {#each ARTIFACT_TYPES as artifactType}
+        <ToggleGroup.Item
+          value={artifactType}
+          class="capitalize data-[state=on]:bg-primary data-[state=on]:border-primary data-[state=on]:text-primary-foreground"
+        >
+          {artifactType}s
+        </ToggleGroup.Item>
+      {/each}
+    </ToggleGroup.Root>
     {#await getArtifacts({ q })}
       <ul class="grid sm:grid-cols-2 grid-cols-1 p-4 gap-4 md:grid-cols-3">
         {#each { length: 20 } as _}
           <li>
-            <Card.Root>
+            <Card.Root class="max-w-sm w-full">
               <Card.Header>
                 <Skeleton class="w-full h-4" />
                 <Skeleton class="w-full h-3.5" />
@@ -49,7 +61,7 @@ let q = $state("");
         <ul>
           {#each artifacts as { title, description }}
             <li>
-              <Card.Root>
+              <Card.Root class="max-w-sm w-full">
                 <Card.Header>
                   <Card.Title>{title}</Card.Title>
                   <Card.Description>{description}</Card.Description>
