@@ -5,8 +5,11 @@ import { emailOTP, username } from "better-auth/plugins";
 import { sveltekitCookies } from "better-auth/svelte-kit";
 import Stripe from "stripe";
 import { db } from "#lib/server/db/drizzle.ts";
+import * as schema from "#lib/server/db/schema.ts";
 import { sendEmail } from "#lib/server/email.ts";
 import {
+  BETTER_AUTH_SECRET,
+  BETTER_AUTH_URL,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
   GOOGLE_CLIENT_ID,
@@ -21,8 +24,11 @@ const stripeClient = new Stripe(STRIPE_SECRET_KEY, {
 });
 
 export const auth = betterAuth({
+  secret: BETTER_AUTH_SECRET,
+  baseURL: BETTER_AUTH_URL,
   database: drizzleAdapter(db, {
     provider: "pg",
+    schema,
   }),
   emailAndPassword: {
     enabled: true,
