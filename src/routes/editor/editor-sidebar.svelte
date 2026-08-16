@@ -1,15 +1,13 @@
 <script lang="ts">
 import FolderTreeIcon from "@lucide/svelte/icons/folder-tree";
 import SettingsIcon from "@lucide/svelte/icons/settings";
-import latexdex from "#lib/assets/favicon.svg";
 import * as Sidebar from "#lib/components/ui/sidebar/index.ts";
-import * as ToggleGroup from "#lib/components/ui/toggle-group/index.ts";
-
-let sidebar = Sidebar.useSidebar();
 </script>
 
 <Sidebar.Root collapsible="icon">
-  <Sidebar.Header> </Sidebar.Header>
+  <Sidebar.Header>
+    <Sidebar.MenuButton> </Sidebar.MenuButton>
+  </Sidebar.Header>
   <Sidebar.Content>
     <Sidebar.Group>
       <Sidebar.Content>
