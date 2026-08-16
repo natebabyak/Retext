@@ -2,7 +2,7 @@ import { error } from "@sveltejs/kit";
 import z from "zod";
 import { ARTIFACT_TYPES } from "#lib/constants.ts";
 import { db } from "#lib/server/db/drizzle.ts";
-import { artifact, file, tag } from "#lib/server/db/schema.ts";
+import { artifact, artifactsToTags, file, tag } from "#lib/server/db/schema.ts";
 import { form, getRequestEvent, query } from "$app/server";
 
 export const createArtifact = form(
@@ -10,7 +10,6 @@ export const createArtifact = form(
     title: z.string().min(1).max(255),
     description: z.string().min(1).max(255).optional(),
     type: z.enum(ARTIFACT_TYPES),
-    content: z.string(),
     files: z
       .array(
         z.object({
@@ -35,10 +34,6 @@ export const createArtifact = form(
     const { user } = event.locals;
     if (!user) error(401, "Unauthorized");
 
-    if (tags) {
-      await db.insert(tag).values(tags).onConflictDoNothing();
-    }
-
     const [{ artifactId }] = await db
       .insert(artifact)
       .values({
@@ -59,16 +54,16 @@ export const createArtifact = form(
       })),
     );
 
-    if (!tags) return;
+    if (tags) {
+      await db.insert(tag).values(tags).onConflictDoNothing();
 
-    await db
-      .insert(tag)
-      .values(
+      await db.insert(artifactsToTags).values(
         tags.map(({ content }) => ({
-          content,
+          artifactId,
+          tagId: content,
         })),
-      )
-      .onConflictDoNothing({ target: tag.content });
+      );
+    }
   },
 );
 

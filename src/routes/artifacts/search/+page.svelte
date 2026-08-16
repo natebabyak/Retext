@@ -1,7 +1,9 @@
 <script lang="ts">
 import BirdIcon from "@lucide/svelte/icons/bird";
-import Funnel from "@lucide/svelte/icons/funnel";
+import CheckIcon from "@lucide/svelte/icons/check";
 import SearchIcon from "@lucide/svelte/icons/search";
+import { backOut } from "svelte/easing";
+import { fly } from "svelte/transition";
 import Footer from "#lib/components/footer.svelte";
 import Header from "#lib/components/header.svelte";
 import { Button } from "#lib/components/ui/button/index.ts";
@@ -11,39 +13,49 @@ import * as InputGroup from "#lib/components/ui/input-group/index.ts";
 import { Skeleton } from "#lib/components/ui/skeleton/index.ts";
 import * as ToggleGroup from "#lib/components/ui/toggle-group/index.ts";
 import { ARTIFACT_TYPES } from "#lib/constants.ts";
+import { goto } from "$app/navigation";
+import { page } from "$app/state";
 import { getArtifacts } from "./artifacts.remote";
+import CreateArtifactDialog from "./create-artifact-dialog.svelte";
 
-let q = $state("");
+let q = $derived(page.url.searchParams.get("q") ?? "");
 </script>
 
 <div class="min-h-screen flex flex-col">
   <Header />
   <main class="flex-1">
-    <div class="max-w-xs w-full mx-auto sticky top-4 gap-2 flex">
-      <InputGroup.Root>
-        <InputGroup.Input placeholder="Search artifacts..." bind:value={q} />
+    <div class="sticky top-4 gap-2 flex-col flex items-center">
+      <InputGroup.Root class="max-w-md w-full">
+        <InputGroup.Input
+          placeholder="Search artifacts..."
+          bind:value={q}
+          oninput={(e) => goto(`?q=${(e.target as HTMLInputElement).value}`, {
+            persistState: true,
+            shallow: true
+          })}
+        />
         <InputGroup.Addon>
           <SearchIcon />
         </InputGroup.Addon>
       </InputGroup.Root>
-      <Button size="icon" variant="outline">
-        <Funnel />
-      </Button>
+      <ToggleGroup.Root size="sm" spacing={2} type="single" variant="outline">
+        {#each ARTIFACT_TYPES as artifactType}
+          <ToggleGroup.Item
+            value={artifactType}
+            class="capitalize data-[state=on]:bg-primary data-[state=on]:border-primary data-[state=on]:text-primary-foreground"
+          >
+            <CheckIcon
+              class="scale-0 data-[state=on]:scale-100 transition-transform hidden data-[state=on]:block"
+            />
+            {artifactType}s
+          </ToggleGroup.Item>
+        {/each}
+      </ToggleGroup.Root>
     </div>
-    <ToggleGroup.Root size="sm" spacing={2} type="single" variant="outline">
-      {#each ARTIFACT_TYPES as artifactType}
-        <ToggleGroup.Item
-          value={artifactType}
-          class="capitalize data-[state=on]:bg-primary data-[state=on]:border-primary data-[state=on]:text-primary-foreground"
-        >
-          {artifactType}s
-        </ToggleGroup.Item>
-      {/each}
-    </ToggleGroup.Root>
     {#await getArtifacts({ q })}
       <ul class="grid sm:grid-cols-2 grid-cols-1 p-4 gap-4 md:grid-cols-3">
         {#each { length: 20 } as _}
-          <li>
+          <li in:fly={{ duration: 300, easing: backOut, y: 8}}>
             <Card.Root class="max-w-sm w-full">
               <Card.Header>
                 <Skeleton class="w-full h-4" />
@@ -84,7 +96,7 @@ let q = $state("");
           </Empty.Header>
           <Empty.Content>
             <div class="flex gap-2">
-              <Button>Create Artifact</Button>
+              <CreateArtifactDialog />
               <Button variant="outline">Clear Search</Button>
             </div>
           </Empty.Content>

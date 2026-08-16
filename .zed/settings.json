@@ -21,6 +21,17 @@
           "name": "biome",
         },
       },
+      "code_actions_on_format": {
+        "source.fixAll.biome": true,
+      },
+    },
+  },
+  "lsp": {
+    "biome": {
+      "binary": {
+        "arguments": ["lsp-proxy"],
+        "path": "./node_modules/.bin/biome",
+      },
     },
   },
 }
