@@ -1,12 +1,12 @@
 <script lang="ts">
 import { createForm } from "@tanstack/svelte-form";
 import katex from "katex";
+import { createArtifact } from "#lib/artifacts.remote.ts";
 import { Button } from "#lib/components/ui/button/index.ts";
 import * as Dialog from "#lib/components/ui/dialog/index.ts";
 import * as Field from "#lib/components/ui/field/index.ts";
 import { Input } from "#lib/components/ui/input/index.ts";
 import { Textarea } from "#lib/components/ui/textarea/index.ts";
-import { createArtifact } from "./artifacts.remote";
 
 const form = createForm(() => ({
   defaultValues: {
@@ -29,7 +29,7 @@ const form = createForm(() => ({
     <Dialog.Header>
       <Dialog.Title>Create Artifact</Dialog.Title>
     </Dialog.Header>
-    <form {...createArtifact}>
+    <form>
       <Field.Group>
         <form.Field name="title">
           {#snippet children(field)}
@@ -65,20 +65,21 @@ const form = createForm(() => ({
           {#snippet children(field)}
             <Field.Field>
               <Field.Label for={field.name}>Snippet</Field.Label>
-              <Input
+              <Textarea
                 name={field.name}
                 onblur={field.handleBlur}
                 placeholder={`\\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}`}
                 value={field.state.value}
-                oninput={(e) => field.handleChange((e.target as HTMLInputElement).value)}
+                oninput={(e) => field.handleChange((e.target as HTMLTextAreaElement).value)}
               />
+              <Field.Description></Field.Description>
+              {#if field.state.meta.errors}
+                <Field.Error>{field.state.meta.errors.join(", ")}</Field.Error>
+              {/if}
             </Field.Field>
           {/snippet}
         </form.Field>
       </Field.Group>
-      <div>
-        {@html katex.renderToString(form.state.values.file)}
-      </div>
       <Dialog.Footer>
         <Button type="submit">Done</Button>
       </Dialog.Footer>

@@ -4,6 +4,7 @@ import CheckIcon from "@lucide/svelte/icons/check";
 import SearchIcon from "@lucide/svelte/icons/search";
 import { backOut } from "svelte/easing";
 import { fly } from "svelte/transition";
+import { getArtifacts } from "#lib/artifacts.remote.ts";
 import Footer from "#lib/components/footer.svelte";
 import Header from "#lib/components/header.svelte";
 import { Button } from "#lib/components/ui/button/index.ts";
@@ -15,10 +16,9 @@ import * as ToggleGroup from "#lib/components/ui/toggle-group/index.ts";
 import { ARTIFACT_TYPES } from "#lib/constants.ts";
 import { goto } from "$app/navigation";
 import { page } from "$app/state";
-import { getArtifacts } from "./artifacts.remote";
 import CreateArtifactDialog from "./create-artifact-dialog.svelte";
 
-let q = $derived(page.url.searchParams.get("q") ?? "");
+let q = $state(page.url.searchParams.get("q") ?? "");
 </script>
 
 <div class="min-h-screen flex flex-col">

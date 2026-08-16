@@ -1,9 +1,10 @@
 <script lang="ts">
+import FolderTreeIcon from "@lucide/svelte/icons/folder-tree";
 import PanelLeftIcon from "@lucide/svelte/icons/panel-left";
+import SettingsIcon from "@lucide/svelte/icons/settings";
 import { Button } from "#lib/components/ui/button/index.ts";
 import * as Menubar from "#lib/components/ui/menubar/index.ts";
 import * as Sidebar from "#lib/components/ui/sidebar/index.ts";
-import EditorSidebar from "./editor-sidebar.svelte";
 
 let { children } = $props();
 </script>
@@ -14,7 +15,30 @@ let { children } = $props();
 </svelte:head>
 
 <Sidebar.Provider>
-  <EditorSidebar />
+  <Sidebar.Root collapsible="icon">
+    <Sidebar.Header>
+      <Sidebar.MenuButton> </Sidebar.MenuButton>
+    </Sidebar.Header>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.Content>
+          <Sidebar.Menu>
+            <Sidebar.MenuButton>
+              <FolderTreeIcon />
+              Files
+            </Sidebar.MenuButton>
+          </Sidebar.Menu>
+        </Sidebar.Content>
+      </Sidebar.Group>
+    </Sidebar.Content>
+    <Sidebar.Footer>
+      <Sidebar.MenuButton size="lg">
+        <SettingsIcon />
+        Settings
+      </Sidebar.MenuButton>
+    </Sidebar.Footer>
+    <Sidebar.Rail />
+  </Sidebar.Root>
   <div class="flex flex-col h-screen w-full">
     <header class="p-2 border-b flex">
       <Menubar.Root>

@@ -1,5 +1,5 @@
 <script lang="ts">
-import DotField from "#lib/components/DotField.svelte";
+import DotField from "#lib/components/dot-field.svelte";
 import Footer from "#lib/components/footer.svelte";
 import Header from "#lib/components/header.svelte";
 import { Button } from "#lib/components/ui/button/index.ts";

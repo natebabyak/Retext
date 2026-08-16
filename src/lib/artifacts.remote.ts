@@ -2,7 +2,7 @@ import { error } from "@sveltejs/kit";
 import z from "zod";
 import { ARTIFACT_TYPES } from "#lib/constants.ts";
 import { db } from "#lib/server/db/drizzle.ts";
-import { artifact, artifactsToTags, file, tag } from "#lib/server/db/schema.ts";
+import { artifact, artifactsToTags } from "#lib/server/db/schema.ts";
 import { form, getRequestEvent, query } from "$app/server";
 
 export const createArtifact = form(
