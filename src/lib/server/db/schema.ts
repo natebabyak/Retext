@@ -120,25 +120,20 @@ export const artifactsToTags = snakeCase.table(
   (table) => [primaryKey({ columns: [table.artifactId, table.tagId] })],
 );
 
-export const project = snakeCase.table(
-  "project",
-  {
-    id: uuid()
-      .primaryKey()
-      .default(sql`uuidv7()`),
-    ownerId: text()
-      .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
-    title: text().notNull(),
-    description: text(),
-    createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
-    updatedAt: timestamp({ withTimezone: true })
-      .notNull()
-      .defaultNow()
-      .$onUpdate(() => new Date()),
-  },
-  (table) => [unique().on(table.ownerId, table.title)],
-);
+export const project = snakeCase.table("project", {
+  id: uuid()
+    .primaryKey()
+    .default(sql`uuidv7()`),
+  ownerId: text()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  title: text().notNull(),
+  createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp({ withTimezone: true })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
 
 export const projectCollaborator = snakeCase.table(
   "project_collaborator",

@@ -2,32 +2,25 @@ import { error } from "@sveltejs/kit";
 import z from "zod";
 import { db } from "#lib/server/db/drizzle.ts";
 import { project } from "#lib/server/db/schema.ts";
-import { form, getRequestEvent, query } from "$app/server";
+import { command, getRequestEvent, query } from "$app/server";
 
-export const createProject = form(
-  z.object({
-    title: z.string(),
-    description: z.string().optional(),
-  }),
-  async ({ title, description }) => {
-    const event = getRequestEvent();
-    if (!event) error(500, "Internal Server Error");
+export const createProject = command(async () => {
+  const event = getRequestEvent();
+  if (!event) error(500, "Internal Server Error");
 
-    const { user } = event.locals;
-    if (!user) error(401, "Unauthorized");
+  const { user } = event.locals;
+  if (!user) error(401, "Unauthorized");
 
-    const [newProject] = await db
-      .insert(project)
-      .values({
-        ownerId: user.id,
-        title,
-        description,
-      })
-      .returning();
+  const [{ id: newProjectId }] = await db
+    .insert(project)
+    .values({
+      ownerId: user.id,
+      title: "Untitled Project",
+    })
+    .returning();
 
-    return newProject;
-  },
-);
+  return newProjectId;
+});
 
 export const getProjects = query(async () => {
   const event = getRequestEvent();
@@ -50,6 +43,8 @@ export const getProjects = query(async () => {
       ],
     },
     with: {
+      collaborators: true,
+      owner: true,
       tags: true,
     },
   });
