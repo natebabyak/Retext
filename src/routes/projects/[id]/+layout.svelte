@@ -1,10 +1,7 @@
 <script lang="ts">
-import FolderTreeIcon from "@lucide/svelte/icons/folder-tree";
 import PanelLeftIcon from "@lucide/svelte/icons/panel-left";
-import SettingsIcon from "@lucide/svelte/icons/settings";
 import { Button } from "#lib/components/ui/button/index.ts";
 import * as Menubar from "#lib/components/ui/menubar/index.ts";
-import * as Sidebar from "#lib/components/ui/sidebar/index.ts";
 
 let { children } = $props();
 </script>
@@ -14,31 +11,7 @@ let { children } = $props();
   <meta name="description" content="TODO">
 </svelte:head>
 
-<Sidebar.Root collapsible="icon">
-  <Sidebar.Header>
-    <Sidebar.MenuButton> </Sidebar.MenuButton>
-  </Sidebar.Header>
-  <Sidebar.Content>
-    <Sidebar.Group>
-      <Sidebar.Content>
-        <Sidebar.Menu>
-          <Sidebar.MenuButton>
-            <FolderTreeIcon />
-            Files
-          </Sidebar.MenuButton>
-        </Sidebar.Menu>
-      </Sidebar.Content>
-    </Sidebar.Group>
-  </Sidebar.Content>
-  <Sidebar.Footer>
-    <Sidebar.MenuButton size="lg">
-      <SettingsIcon />
-      Settings
-    </Sidebar.MenuButton>
-  </Sidebar.Footer>
-  <Sidebar.Rail />
-</Sidebar.Root>
-<div class="flex flex-col h-screen w-full">
+<div class="w-full h-screen flex flex-col">
   <header class="p-2 border-b flex">
     <Menubar.Root>
       <Menubar.Menu>
@@ -61,7 +34,12 @@ let { children } = $props();
       </Menubar.Menu>
     </Menubar.Root>
   </header>
-  {@render children()}
+  <div class="flex-1 flex">
+    <aside class="w-12 border-r"></aside>
+    <main class="flex-1">
+      {@render children()}
+    </main>
+  </div>
   <footer class="p-1 border-t">
     <Button size="icon-xs" variant="ghost">
       <PanelLeftIcon />

@@ -1,5 +1,6 @@
 <script lang="ts">
 import "./layout.css";
+import "katex/dist/katex.min.css";
 
 let { children } = $props();
 </script>

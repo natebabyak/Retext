@@ -156,12 +156,6 @@ const table = createTable({
           <SearchIcon />
         </InputGroup.Addon>
       </InputGroup.Root>
-      <ToggleGroup.Root type="single" spacing={2} variant="outline">
-        <ToggleGroup.Item value="all">All</ToggleGroup.Item>
-        <ToggleGroup.Item value="owner">Owner</ToggleGroup.Item>
-        <ToggleGroup.Item value="editor">Editor</ToggleGroup.Item>
-        <ToggleGroup.Item value="viewer">Viewer</ToggleGroup.Item>
-      </ToggleGroup.Root>
       <Table.Root>
         <Table.Header>
           {#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
