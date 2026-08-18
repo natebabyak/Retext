@@ -1,46 +1,49 @@
 <script lang="ts">
-import McpIcon from "@iconify-svelte/bxl/mcp";
-import ArrowRightIcon from "@lucide/svelte/icons/arrow-right";
-import DatabaseIcon from "@lucide/svelte/icons/database";
-import PenToolIcon from "@lucide/svelte/icons/pen-tool";
-import SearchIcon from "@lucide/svelte/icons/search";
-import favicon from "#lib/assets/favicon.svg";
-import { authClient } from "#lib/auth-client.ts";
-import * as Avatar from "#lib/components/ui/avatar/index.ts";
-import { Button } from "#lib/components/ui/button/index.ts";
-import * as Item from "#lib/components/ui/item/index.js";
-import * as Kbd from "#lib/components/ui/kbd/index.ts";
-import * as NavigationMenu from "#lib/components/ui/navigation-menu/index.ts";
-import { navigationMenuTriggerStyle } from "#lib/components/ui/navigation-menu/navigation-menu-trigger.svelte";
+  import McpIcon from "@iconify-svelte/bxl/mcp";
+  import ArrowRightIcon from "@lucide/svelte/icons/arrow-right";
+  import DatabaseIcon from "@lucide/svelte/icons/database";
+  import LogOutIcon from "@lucide/svelte/icons/log-out";
+  import PenToolIcon from "@lucide/svelte/icons/pen-tool";
+  import SearchIcon from "@lucide/svelte/icons/search";
 
-const SOLUTIONS = [
-  {
-    href: "/",
-    title: "For Authors",
-  },
-  {
-    href: "/",
-    title: "For Engineers",
-  },
-  {
-    href: "/",
-    title: "For Researchers",
-  },
-  {
-    href: "/",
-    title: "For Students",
-  },
-] satisfies Array<{
-  href: string;
-  title: string;
-}>;
+  import favicon from "#lib/assets/favicon.svg";
+  import { authClient } from "#lib/auth-client.ts";
+  import * as Avatar from "#lib/components/ui/avatar/index.ts";
+  import { Button } from "#lib/components/ui/button/index.ts";
+  import * as DropdownMenu from "#lib/components/ui/dropdown-menu/index.ts";
+  import * as Item from "#lib/components/ui/item/index.js";
+  import * as Kbd from "#lib/components/ui/kbd/index.ts";
+  import * as NavigationMenu from "#lib/components/ui/navigation-menu/index.ts";
+  import { navigationMenuTriggerStyle } from "#lib/components/ui/navigation-menu/navigation-menu-trigger.svelte";
 
-const session = authClient.useSession();
+  const SOLUTIONS = [
+    {
+      href: "/",
+      title: "For Authors",
+    },
+    {
+      href: "/",
+      title: "For Engineers",
+    },
+    {
+      href: "/",
+      title: "For Researchers",
+    },
+    {
+      href: "/",
+      title: "For Students",
+    },
+  ] satisfies Array<{
+    href: string;
+    title: string;
+  }>;
+
+  const session = authClient.useSession();
 </script>
 
 <header class="flex justify-between items-center p-4">
   <a href="/">
-    <img alt="LaTeXdex logo" src={favicon}>
+    <img alt="LaTeXdex logo" src={favicon} />
     <span class="sr-only">LaTeXdex</span>
   </a>
   {#if !$session.data}
@@ -84,9 +87,7 @@ const session = authClient.useSession();
                       </Item.Media>
                       <Item.Content>
                         <Item.Title>Editor</Item.Title>
-                        <Item.Description>
-                          The last editor you'll ever need
-                        </Item.Description>
+                        <Item.Description>The last editor you'll ever need</Item.Description>
                       </Item.Content>
                     </NavigationMenu.Link>
                   {/snippet}
@@ -105,7 +106,7 @@ const session = authClient.useSession();
                       </Item.Media>
                       <Item.Content>
                         <Item.Title>MCP</Item.Title>
-                        <Item.Description> Let </Item.Description>
+                        <Item.Description>Let</Item.Description>
                       </Item.Content>
                     </NavigationMenu.Link>
                   {/snippet}
@@ -141,10 +142,7 @@ const session = authClient.useSession();
           </NavigationMenu.Content>
         </NavigationMenu.Item>
         <NavigationMenu.Item>
-          <NavigationMenu.Link
-            href="/pricing"
-            class={navigationMenuTriggerStyle()}
-          >
+          <NavigationMenu.Link href="/pricing" class={navigationMenuTriggerStyle()}>
             Pricing
           </NavigationMenu.Link>
         </NavigationMenu.Item>
@@ -159,10 +157,19 @@ const session = authClient.useSession();
         Artifacts
         <Kbd.Root>&#x2318;K</Kbd.Root>
       </Button>
-      <Avatar.Root>
-        <Avatar.Image src={$session.data.user.image} alt="@shadcn" />
-        <Avatar.Fallback>{$session.data.user.name.charAt(0)}</Avatar.Fallback>
-      </Avatar.Root>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          <Avatar.Root>
+            <Avatar.Image src={$session.data.user.image} alt="@shadcn" />
+            <Avatar.Fallback>{$session.data.user.name.charAt(0)}</Avatar.Fallback>
+          </Avatar.Root>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item onclick={() => authClient.signOut()}>
+            <LogOutIcon /> Sign out
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
     </div>
   {:else}
     <Button href="/sign-in">
