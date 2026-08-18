@@ -4,6 +4,7 @@ import { basicSetup, EditorView } from "codemirror";
 import { latex } from "codemirror-lang-latex";
 import katex from "katex";
 import { onDestroy, onMount } from "svelte";
+import * as InputGroup from "#lib/components/ui/input-group/index.ts";
 import * as Resizable from "#lib/components/ui/resizable/index.ts";
 
 let editorContainer: HTMLDivElement;
@@ -37,6 +38,15 @@ onDestroy(() => {
 </script>
 
 <Resizable.PaneGroup direction="horizontal">
+  <Resizable.Pane>
+    <InputGroup.Root>
+      <InputGroup.Textarea
+        placeholder="Message the LaTeXdex agent. Type @ to include context and / for commands."
+      />
+      <InputGroup.Addon> </InputGroup.Addon>
+    </InputGroup.Root>
+  </Resizable.Pane>
+  <Resizable.Handle withHandle />
   <Resizable.Pane>
     <div bind:this={editorContainer}></div>
   </Resizable.Pane>

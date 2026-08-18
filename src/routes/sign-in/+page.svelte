@@ -1,33 +1,33 @@
 <script lang="ts">
-import GithubIcon from "@iconify-svelte/bxl/github";
-import GoogleIcon from "@iconify-svelte/bxl/google";
-import { createForm, formOptions } from "@tanstack/svelte-form";
-import z from "zod";
-import { authClient } from "#lib/auth-client.ts";
-import Footer from "#lib/components/footer.svelte";
-import Header from "#lib/components/header.svelte";
-import { Button } from "#lib/components/ui/button/index.ts";
-import * as Card from "#lib/components/ui/card/index.ts";
-import * as Field from "#lib/components/ui/field/index.js";
-import { Input } from "#lib/components/ui/input/index.ts";
-import { Separator } from "#lib/components/ui/separator/index.ts";
-import { Spinner } from "#lib/components/ui/spinner/index.ts";
+  import GithubIcon from "@iconify-svelte/bxl/github";
+  import GoogleIcon from "@iconify-svelte/bxl/google";
+  import { createForm, formOptions } from "@tanstack/svelte-form";
+  import z from "zod";
+  import { authClient } from "#lib/auth-client.ts";
+  import Footer from "#lib/components/footer.svelte";
+  import Header from "#lib/components/header.svelte";
+  import { Button } from "#lib/components/ui/button/index.ts";
+  import * as Card from "#lib/components/ui/card/index.ts";
+  import * as Field from "#lib/components/ui/field/index.js";
+  import { Input } from "#lib/components/ui/input/index.ts";
+  import { Separator } from "#lib/components/ui/separator/index.ts";
+  import { Spinner } from "#lib/components/ui/spinner/index.ts";
 
-const formOpts = formOptions({
-  defaultValues: {
-    email: "",
-  },
-});
+  const formOpts = formOptions({
+    defaultValues: {
+      email: "",
+    },
+  });
 
-const form = createForm(() => ({
-  ...formOpts,
-  onSubmit: async ({ value }) => {
-    await authClient.emailOtp.sendVerificationOtp({
-      email: value.email,
-      type: "sign-in",
-    });
-  },
-}));
+  const form = createForm(() => ({
+    ...formOpts,
+    onSubmit: async ({ value }) => {
+      await authClient.emailOtp.sendVerificationOtp({
+        email: value.email,
+        type: "sign-in",
+      });
+    },
+  }));
 </script>
 
 <Header />
@@ -40,13 +40,19 @@ const form = createForm(() => ({
     <Card.Content class="flex-col flex gap-4">
       <div class="flex flex-col gap-2">
         <Button
-          onclick={async () => await authClient.signIn.social({ provider: "github", })}
+          onclick={async () =>
+            await authClient.signIn.social({
+              provider: "github",
+            })}
         >
           <GithubIcon />
           Continue with GitHub
         </Button>
         <Button
-          onclick={async () => await authClient.signIn.social({ provider: "google", })}
+          onclick={async () =>
+            await authClient.signIn.social({
+              provider: "google",
+            })}
         >
           <GoogleIcon />
           Continue with Google
@@ -59,15 +65,15 @@ const form = createForm(() => ({
       </div>
       <form
         onsubmit={(e) => {
-        e.preventDefault()
-      }}
+          e.preventDefault();
+        }}
       >
         <Field.Group>
           <form.Field
             name="email"
             validators={{
-            onChange: z.email()
-          }}
+              onChange: z.email(),
+            }}
           >
             {#snippet children(field)}
               <Field.Field>
@@ -84,15 +90,12 @@ const form = createForm(() => ({
         </Field.Group>
         <form.Subscribe
           selector={(state) => ({
-          canSubmit: state.canSubmit,
-          isSubmitting: state.isSubmitting
-        })}
+            canSubmit: state.canSubmit,
+            isSubmitting: state.isSubmitting,
+          })}
         >
           {#snippet children(state)}
-            <Button
-              disabled={!state.canSubmit || state.isSubmitting}
-              type="submit"
-            >
+            <Button disabled={!state.canSubmit || state.isSubmitting} type="submit">
               {#if state.isSubmitting}
                 <Spinner />
               {:else}

@@ -1,22 +1,19 @@
 <script lang="ts">
-import DotField from "#lib/components/dot-field.svelte";
-import Footer from "#lib/components/footer.svelte";
-import Header from "#lib/components/header.svelte";
-import { Button } from "#lib/components/ui/button/index.ts";
+  import DotField from "#lib/components/dot-field.svelte";
+  import Footer from "#lib/components/footer.svelte";
+  import Header from "#lib/components/header.svelte";
+  import { Button } from "#lib/components/ui/button/index.ts";
 </script>
 
 <Header />
 <section
   class="flex min-h-[80vh] relative bg-primary rounded-4xl max-w-7xl flex-col gap-8 justify-center items-center"
 >
-  <h1
-    class="tracking-tighter max-w-3xl text-5xl text-center text-primary-foreground text-balance"
-  >
+  <h1 class="tracking-tighter max-w-3xl text-5xl text-center text-primary-foreground text-balance">
     Beautiful markup made as easy as copy and paste
   </h1>
   <p class="text-primary-foreground">
-    Search from thousands of prompts, snippets, templates, and more. Start using
-    them in seconds
+    Search from thousands of prompts, snippets, templates, and more. Start using them in seconds
   </p>
   <div class="flex gap-2">
     <Button href="/sign-up" size="lg" variant="outline">Get Started</Button>
