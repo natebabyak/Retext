@@ -32,6 +32,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
   },
   socialProviders: {
     github: {
@@ -47,21 +48,21 @@ export const auth = betterAuth({
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {
         if (type === "sign-in") {
-          sendEmail({
+          await sendEmail({
             from: "noreply@latexdex.com",
             to: email,
             subject: "Sign in OTP",
             html: `Your OTP is ${otp}`,
           });
         } else if (type === "email-verification") {
-          sendEmail({
+          await sendEmail({
             from: "noreply@latexdex.com",
             to: email,
             subject: "Email Verification OTP",
             html: `Your OTP is ${otp}`,
           });
         } else {
-          sendEmail({
+          await sendEmail({
             from: "noreply@latexdex.com",
             to: email,
             subject: "Password Reset OTP",

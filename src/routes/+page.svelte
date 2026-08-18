@@ -1,9 +1,11 @@
 <script lang="ts">
   import ArrowRight from "@lucide/svelte/icons/arrow-right";
+  import SearchIcon from "@lucide/svelte/icons/search";
 
   import Footer from "#lib/components/footer.svelte";
   import Header from "#lib/components/header.svelte";
   import { Button } from "#lib/components/ui/button/index.ts";
+  import * as InputGroup from "#lib/components/ui/input-group/index.ts";
 </script>
 
 <Header />
@@ -23,6 +25,12 @@
   </div>
 </section>
 <section>
+  <InputGroup.Root>
+    <InputGroup.Input />
+    <InputGroup.Addon>
+      <SearchIcon />
+    </InputGroup.Addon>
+  </InputGroup.Root>
   <h2 class="text-center text-5xl tracking-tighter">Built for the agent era</h2>
 </section>
 <Footer />
