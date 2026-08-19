@@ -8,6 +8,8 @@ export const authClient = createAuthClient({
     stripeClient({
       subscription: true,
     }),
-    usernameClient(),
+    usernameClient({
+      displayUsername: false,
+    }),
   ],
 });

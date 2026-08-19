@@ -1,12 +1,17 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
+  import GithubIcon from "@iconify-svelte/bxl/github";
+  import GoogleIcon from "@iconify-svelte/bxl/google";
+  import ArrowUpRightIcon from "@lucide/svelte/icons/arrow-up-right";
   import { createForm, formOptions } from "@tanstack/svelte-form";
   import { toast } from "svelte-sonner";
   import z from "zod";
 
   import { authClient } from "#lib/auth-client.ts";
+  import { Button } from "#lib/components/ui/button/index.ts";
   import * as Field from "#lib/components/ui/field/index.ts";
-
-  let { step = $bindable() }: { step: "method" | "email" | "verify" } = $props();
+  import { Input } from "#lib/components/ui/input/index.ts";
+  import { Spinner } from "#lib/components/ui/spinner/index.ts";
 
   const schema = z.object({
     email: z.email(),
@@ -17,12 +22,9 @@
       email: "",
     },
     validators: {
+      onMount: schema,
       onChange: schema,
     },
-  });
-
-  const form = createForm(() => ({
-    ...formOpts,
     onSubmit: async ({ value }) => {
       const { error } = await authClient.emailOtp.sendVerificationOtp({
         email: value.email,
@@ -34,7 +36,9 @@
         return;
       }
     },
-  }));
+  });
+
+  const form = createForm(() => formOpts);
 </script>
 
 <form
@@ -43,7 +47,7 @@
     form.handleSubmit();
   }}
 >
-  <Field.Group>
+  <Field.Set>
     <form.Field name="email">
       {#snippet children(field)}
         <Field.Field>
@@ -62,28 +66,24 @@
         </Field.Field>
       {/snippet}
     </form.Field>
-    <form.Subscribe
-      selector={(state) => ({
-        canSubmit: state.canSubmit,
-        isSubmitting: state.isSubmitting,
-        isTouched: state.isTouched,
-      })}
-    >
-      {#snippet children({ canSubmit, isSubmitting, isTouched })}
-        <Button disabled={!isTouched || !canSubmit || isSubmitting} size="lg" type="submit">
-          {#if isSubmitting}
-            <Spinner />
-          {:else}
-            Continue with email
-          {/if}
-        </Button>
-      {/snippet}
-    </form.Subscribe>
-    <div class="flex items-center gap-2">
-      <Separator class="flex-1" />
-      <p>or</p>
-      <Separator class="flex-1" />
-    </div>
-    <Field.Field></Field.Field>
-  </Field.Group>
+    <Field.Field>
+      <form.Subscribe
+        selector={(state) => ({
+          canSubmit: state.canSubmit,
+          isSubmitting: state.isSubmitting,
+          isTouched: state.isTouched,
+        })}
+      >
+        {#snippet children({ canSubmit, isSubmitting, isTouched })}
+          <Button disabled={!isTouched || !canSubmit || isSubmitting} size="lg" type="submit">
+            {#if isSubmitting}
+              <Spinner />
+            {:else}
+              Continue with email
+            {/if}
+          </Button>
+        {/snippet}
+      </form.Subscribe>
+    </Field.Field>
+  </Field.Set>
 </form>

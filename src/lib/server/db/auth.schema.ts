@@ -1,10 +1,10 @@
 import { defineRelationsPart } from "drizzle-orm";
 import {
-  boolean,
-  index,
   pgTable,
   text,
   timestamp,
+  boolean,
+  index,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 
@@ -21,7 +21,6 @@ export const user = pgTable("user", {
     .notNull(),
   stripeCustomerId: text("stripe_customer_id"),
   username: text("username").unique(),
-  displayUsername: text("display_username"),
 });
 
 export const session = pgTable(

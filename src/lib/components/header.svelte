@@ -1,12 +1,12 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import McpIcon from "@iconify-svelte/bxl/mcp";
-  import ArrowRightIcon from "@lucide/svelte/icons/arrow-right";
+  import CircleIcon from "@lucide/svelte/icons/circle";
   import DatabaseIcon from "@lucide/svelte/icons/database";
   import LogOutIcon from "@lucide/svelte/icons/log-out";
   import PenToolIcon from "@lucide/svelte/icons/pen-tool";
   import SearchIcon from "@lucide/svelte/icons/search";
 
-  import favicon from "#lib/assets/favicon.svg";
   import { authClient } from "#lib/auth-client.ts";
   import * as Avatar from "#lib/components/ui/avatar/index.ts";
   import { Button } from "#lib/components/ui/button/index.ts";
@@ -16,41 +16,18 @@
   import * as NavigationMenu from "#lib/components/ui/navigation-menu/index.ts";
   import { navigationMenuTriggerStyle } from "#lib/components/ui/navigation-menu/navigation-menu-trigger.svelte";
 
-  const SOLUTIONS = [
-    {
-      href: "/",
-      title: "For Authors",
-    },
-    {
-      href: "/",
-      title: "For Engineers",
-    },
-    {
-      href: "/",
-      title: "For Researchers",
-    },
-    {
-      href: "/",
-      title: "For Students",
-    },
-  ] satisfies Array<{
-    href: string;
-    title: string;
-  }>;
-
   const session = authClient.useSession();
 </script>
 
-<header class="flex items-center justify-between p-4">
+<header class="flex items-center justify-between border-b p-4">
   <a href="/">
-    <img alt="retext logo" src={favicon} />
-    <span class="sr-only">Retext</span>
+    <CircleIcon />
   </a>
   {#if !$session.data}
     <NavigationMenu.Root>
       <NavigationMenu.List>
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger>Products</NavigationMenu.Trigger>
+          <NavigationMenu.Trigger>Product</NavigationMenu.Trigger>
           <NavigationMenu.Content>
             <ul class="grid w-lg grid-cols-3">
               <li>
@@ -80,7 +57,7 @@
                     <NavigationMenu.Link href="/" {...props}>
                       <Item.Media variant="image">
                         <div
-                          class="bg- text-primary-foreground bg-linear-to-b from-white/25 via-transparent to-black/25 p-4 shadow"
+                          class="text-primary-foreground bg-linear-to-b from-white/25 via-transparent to-black/25 p-4 shadow"
                         >
                           <DatabaseIcon />
                         </div>
@@ -112,26 +89,6 @@
                   {/snippet}
                 </Item.Root>
               </li>
-            </ul>
-          </NavigationMenu.Content>
-        </NavigationMenu.Item>
-        <NavigationMenu.Item>
-          <NavigationMenu.Trigger>Solutions</NavigationMenu.Trigger>
-          <NavigationMenu.Content class="min-w-lg">
-            <ul>
-              {#each SOLUTIONS as { href, title }}
-                <li>
-                  <Item.Root>
-                    {#snippet child({ props })}
-                      <NavigationMenu.Link {href} {...props}>
-                        <Item.Content>
-                          <Item.Title>{title}</Item.Title>
-                        </Item.Content>
-                      </NavigationMenu.Link>
-                    {/snippet}
-                  </Item.Root>
-                </li>
-              {/each}
             </ul>
           </NavigationMenu.Content>
         </NavigationMenu.Item>
@@ -172,9 +129,6 @@
       </DropdownMenu.Root>
     </div>
   {:else}
-    <Button href="/sign-in">
-      Get Started
-      <ArrowRightIcon />
-    </Button>
+    <Button href={resolve("/login")} size="lg">Get Started</Button>
   {/if}
 </header>

@@ -1,3 +1,3 @@
 <footer class="p-8">
-  <p>&copy; retext.dev 2026. All rights reserved.</p>
+  <p>&copy; Retext 2026. All rights reserved.</p>
 </footer>

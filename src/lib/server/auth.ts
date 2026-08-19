@@ -76,7 +76,9 @@ export const auth = betterAuth({
       stripeWebhookSecret: STRIPE_WEBHOOK_SECRET,
       createCustomerOnSignUp: true,
     }),
-    username(),
+    username({
+      displayUsername: false,
+    }),
     sveltekitCookies(getRequestEvent),
   ],
   advanced: {
