@@ -17,7 +17,7 @@
   const PLANS = [
     {
       title: "Free",
-      description: "Get started with LaTeXdex",
+      description: "Get started with Retext",
       price: "0",
       href: "/sign-up",
       variant: "outline",

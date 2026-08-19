@@ -11,10 +11,10 @@
 
 <svelte:head>
   <link href="#lib/assets/favicon.svg" rel="icon" />
-  <title>The AI-native markup platform: LaTeXdex</title>
+  <title>Retext</title>
   <meta
     name="description"
-    content="LaTeXdex is the AI-native markup platform. Built by humans and agents; for humans and agents."
+    content="Retext is the AI-native markup platform. Built by humans and agents; for humans and agents."
   />
 </svelte:head>
 

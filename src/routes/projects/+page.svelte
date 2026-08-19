@@ -1,69 +1,70 @@
 <script lang="ts">
-import SearchIcon from "@lucide/svelte/icons/search";
-import SettingsIcon from "@lucide/svelte/icons/settings";
-import {
-  type ColumnDef,
-  createTable,
-  FlexRender,
-  renderSnippet,
-  tableFeatures,
-} from "@tanstack/svelte-table";
-import * as Avatar from "#lib/components/ui/avatar/index.ts";
-import { Badge } from "#lib/components/ui/badge/index.ts";
-import { Button } from "#lib/components/ui/button/index.ts";
-import * as Empty from "#lib/components/ui/empty/index.ts";
-import * as InputGroup from "#lib/components/ui/input-group/index.ts";
-import * as Item from "#lib/components/ui/item/index.ts";
-import * as Sidebar from "#lib/components/ui/sidebar/index.ts";
-import * as Table from "#lib/components/ui/table/index.ts";
-import * as ToggleGroup from "#lib/components/ui/toggle-group/index.ts";
-import { createProject, getProjects } from "#lib/projects.remote.ts";
+  import SearchIcon from "@lucide/svelte/icons/search";
+  import SettingsIcon from "@lucide/svelte/icons/settings";
+  import {
+    type ColumnDef,
+    createTable,
+    FlexRender,
+    renderSnippet,
+    tableFeatures,
+  } from "@tanstack/svelte-table";
 
-type Project = Awaited<ReturnType<typeof getProjects>>[number];
+  import * as Avatar from "#lib/components/ui/avatar/index.ts";
+  import { Badge } from "#lib/components/ui/badge/index.ts";
+  import { Button } from "#lib/components/ui/button/index.ts";
+  import * as Empty from "#lib/components/ui/empty/index.ts";
+  import * as InputGroup from "#lib/components/ui/input-group/index.ts";
+  import * as Item from "#lib/components/ui/item/index.ts";
+  import * as Sidebar from "#lib/components/ui/sidebar/index.ts";
+  import * as Table from "#lib/components/ui/table/index.ts";
+  import * as ToggleGroup from "#lib/components/ui/toggle-group/index.ts";
+  import { createProject, getProjects } from "#lib/projects.remote.ts";
 
-let data = $state<Array<Project>>(getProjects().current ?? []);
+  type Project = Awaited<ReturnType<typeof getProjects>>[number];
 
-const features = tableFeatures({});
+  let data = $state<Array<Project>>(getProjects().current ?? []);
 
-const columns: Array<ColumnDef<typeof features, Project>> = [
-  {
-    id: "title",
-    header: "Title",
-    cell: ({ row }) =>
-      renderSnippet(nameSnippet, {
-        title: row.original.title,
-        owner: row.original.owner?.name ?? "",
-      }),
-  },
-  {
-    id: "collaborators",
-    header: "Collaborators",
-    cell: ({ row }) =>
-      renderSnippet(collaboratorsSnippet, {
-        collaborators: row.original.collaborators,
-      }),
-  },
-  {
-    id: "lastModified",
-    header: "Last Modified",
-    cell: ({ row }) => row.original.updatedAt.toLocaleString(),
-  },
-  {
-    id: "actions",
-    cell: ({ row }) =>
-      renderSnippet(actionsSnippet, {
-        projectId: row.original.id,
-      }),
-  },
-];
+  const features = tableFeatures({});
 
-const table = createTable({
-  features,
-  columns,
-  get data() {
-    return data;
-  },
-});
+  const columns: Array<ColumnDef<typeof features, Project>> = [
+    {
+      id: "title",
+      header: "Title",
+      cell: ({ row }) =>
+        renderSnippet(nameSnippet, {
+          title: row.original.title,
+          owner: row.original.owner?.name ?? "",
+        }),
+    },
+    {
+      id: "collaborators",
+      header: "Collaborators",
+      cell: ({ row }) =>
+        renderSnippet(collaboratorsSnippet, {
+          collaborators: row.original.collaborators,
+        }),
+    },
+    {
+      id: "lastModified",
+      header: "Last Modified",
+      cell: ({ row }) => row.original.updatedAt.toLocaleString(),
+    },
+    {
+      id: "actions",
+      cell: ({ row }) =>
+        renderSnippet(actionsSnippet, {
+          projectId: row.original.id,
+        }),
+    },
+  ];
+
+  const table = createTable({
+    features,
+    columns,
+    get data() {
+      return data;
+    },
+  });
 </script>
 
 {#snippet nameSnippet({ title, owner }: { title: string; owner: string })}
@@ -71,11 +72,11 @@ const table = createTable({
     <Item.Title>
       {title}
     </Item.Title>
-    <Item.Description> by {owner} </Item.Description>
+    <Item.Description>by {owner}</Item.Description>
   </Item.Content>
 {/snippet}
 
-{#snippet collaboratorsSnippet({ collaborators }: { collaborators: Project["collaborators"]})}
+{#snippet collaboratorsSnippet({ collaborators }: { collaborators: Project["collaborators"] })}
   <Avatar.Group>
     {#each collaborators as collaborator}
       <Avatar.Root>
@@ -92,8 +93,8 @@ const table = createTable({
 {/snippet}
 
 <svelte:head>
-  <title>Projects - LaTeXdex</title>
-  <meta name="description" content="TODO">
+  <title>Projects - Retext</title>
+  <meta name="description" content="TODO" />
 </svelte:head>
 
 <Sidebar.Provider>
@@ -103,7 +104,7 @@ const table = createTable({
         <Sidebar.GroupContent>
           <Sidebar.Menu>
             <Sidebar.MenuItem>
-              <Sidebar.MenuButton>LaTeXdex</Sidebar.MenuButton>
+              <Sidebar.MenuButton>Retext</Sidebar.MenuButton>
             </Sidebar.MenuItem>
           </Sidebar.Menu>
         </Sidebar.GroupContent>
@@ -150,7 +151,7 @@ const table = createTable({
   <Sidebar.Inset>
     <main class="flex-1">
       <h1 class="text-2xl font-medium">Projects</h1>
-      <InputGroup.Root class="max-w-sm w-full">
+      <InputGroup.Root class="w-full max-w-sm">
         <InputGroup.Input placeholder="Search projects..." />
         <InputGroup.Addon>
           <SearchIcon />
@@ -182,17 +183,15 @@ const table = createTable({
               <Table.Cell>
                 <Empty.Root>
                   <Empty.Header>
-                    <Empty.Media variant="icon"> </Empty.Media>
+                    <Empty.Media variant="icon"></Empty.Media>
                     <Empty.Title>No Projects Yet</Empty.Title>
                     <Empty.Description>
-                      You haven't created any projects yet. Get started by
-                      creating your first project.
+                      You haven't created any projects yet. Get started by creating your first
+                      project.
                     </Empty.Description>
                   </Empty.Header>
                   <Empty.Content>
-                    <Button onclick={() => createProject()}>
-                      Create my first project
-                    </Button>
+                    <Button onclick={() => createProject()}>Create my first project</Button>
                   </Empty.Content>
                 </Empty.Root>
               </Table.Cell>

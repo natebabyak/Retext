@@ -9,7 +9,7 @@
   viewBox="0 0 24 24"
   class={className}
 >
-  <title>latexdex-logo</title>
+  <title>retext-logo</title>
   <rect width="4.8" height="4.8" x="0" y="9.6" rx="1.2" ry="1.2" />
   <rect width="4.8" height="4.8" x="4.8" y="4.8" rx="1.2" ry="1.2" />
   <rect width="4.8" height="4.8" x="9.6" y="9.6" rx="1.2" ry="1.2" />

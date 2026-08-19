@@ -41,10 +41,10 @@
   const session = authClient.useSession();
 </script>
 
-<header class="flex justify-between items-center p-4">
+<header class="flex items-center justify-between p-4">
   <a href="/">
-    <img alt="LaTeXdex logo" src={favicon} />
-    <span class="sr-only">LaTeXdex</span>
+    <img alt="retext logo" src={favicon} />
+    <span class="sr-only">Retext</span>
   </a>
   {#if !$session.data}
     <NavigationMenu.Root>
@@ -52,14 +52,14 @@
         <NavigationMenu.Item>
           <NavigationMenu.Trigger>Products</NavigationMenu.Trigger>
           <NavigationMenu.Content>
-            <ul class="w-lg grid grid-cols-3">
+            <ul class="grid w-lg grid-cols-3">
               <li>
                 <Item.Root>
                   {#snippet child({ props })}
                     <NavigationMenu.Link href="/editor" {...props}>
                       <Item.Media variant="image">
                         <div
-                          class="bg-primary text-primary-foreground bg-linear-to-b from-white/50 to-black/50 p-4 via-transparent"
+                          class="bg-primary text-primary-foreground bg-linear-to-b from-white/50 via-transparent to-black/50 p-4"
                         >
                           <PenToolIcon />
                         </div>
@@ -80,7 +80,7 @@
                     <NavigationMenu.Link href="/" {...props}>
                       <Item.Media variant="image">
                         <div
-                          class="bg- text-primary-foreground bg-linear-to-b from-white/25 to-black/25 shadow via-transparent p-4"
+                          class="bg- text-primary-foreground bg-linear-to-b from-white/25 via-transparent to-black/25 p-4 shadow"
                         >
                           <DatabaseIcon />
                         </div>
@@ -99,7 +99,7 @@
                     <NavigationMenu.Link href="/" {...props}>
                       <Item.Media variant="image">
                         <div
-                          class="bg-orange-700 text-primary-foreground bg-linear-to-b from-white/25 to-black/25 via-transparent p-4"
+                          class="text-primary-foreground bg-orange-700 bg-linear-to-b from-white/25 via-transparent to-black/25 p-4"
                         >
                           <McpIcon />
                         </div>
@@ -150,7 +150,7 @@
     </NavigationMenu.Root>
   {/if}
   {#if $session.data}
-    <div class="flex gap-2 items-center">
+    <div class="flex items-center gap-2">
       <Button href="/projects" variant="outline">Projects</Button>
       <Button href="/artifacts/search" variant="outline">
         <SearchIcon />

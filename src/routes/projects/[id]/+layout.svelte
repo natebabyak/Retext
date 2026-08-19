@@ -1,18 +1,19 @@
 <script lang="ts">
-import PanelLeftIcon from "@lucide/svelte/icons/panel-left";
-import { Button } from "#lib/components/ui/button/index.ts";
-import * as Menubar from "#lib/components/ui/menubar/index.ts";
+  import PanelLeftIcon from "@lucide/svelte/icons/panel-left";
 
-let { children } = $props();
+  import { Button } from "#lib/components/ui/button/index.ts";
+  import * as Menubar from "#lib/components/ui/menubar/index.ts";
+
+  let { children } = $props();
 </script>
 
 <svelte:head>
-  <title>My Projects - LaTeXdex</title>
-  <meta name="description" content="TODO">
+  <title>My Projects - Retext</title>
+  <meta name="description" content="TODO" />
 </svelte:head>
 
-<div class="w-full h-screen flex flex-col">
-  <header class="p-2 border-b flex">
+<div class="flex h-screen w-full flex-col">
+  <header class="flex border-b p-2">
     <Menubar.Root>
       <Menubar.Menu>
         <Menubar.Trigger>File</Menubar.Trigger>
@@ -34,13 +35,13 @@ let { children } = $props();
       </Menubar.Menu>
     </Menubar.Root>
   </header>
-  <div class="flex-1 flex">
+  <div class="flex flex-1">
     <aside class="w-12 border-r"></aside>
     <main class="flex-1">
       {@render children()}
     </main>
   </div>
-  <footer class="p-1 border-t">
+  <footer class="border-t p-1">
     <Button size="icon-xs" variant="ghost">
       <PanelLeftIcon />
     </Button>

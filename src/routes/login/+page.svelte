@@ -8,7 +8,7 @@
   import z from "zod";
 
   import { authClient } from "#lib/auth-client.ts";
-  import LatexdexIcon from "#lib/components/latexdex-icon.svelte";
+  import RetextIcon from "#lib/components/retext-icon.svelte";
   import { Button } from "#lib/components/ui/button/index.ts";
   import * as Card from "#lib/components/ui/card/index.ts";
   import * as Field from "#lib/components/ui/field/index.js";
@@ -26,7 +26,7 @@
 
 <Card.Root>
   <Card.Header>
-    <LatexdexIcon class="size-8" />
+    <RetextIcon class="size-8" />
   </Card.Header>
   <Card.Content></Card.Content>
   <Card.Footer>
@@ -40,7 +40,7 @@
 
 <div class="relative h-screen w-full">
   <header class="flex p-4">
-    <a href={resolve("/")} class="text-"> LaTeXdex </a>
+    <a href={resolve("/")} class="text-"> Retext </a>
   </header>
   <Card.Root class="absolute top-1/2 left-1/2 w-full max-w-sm -translate-x-1/2 -translate-y-1/2">
     <Card.Content>

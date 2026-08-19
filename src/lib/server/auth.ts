@@ -49,21 +49,21 @@ export const auth = betterAuth({
       async sendVerificationOTP({ email, otp, type }) {
         if (type === "sign-in") {
           await sendEmail({
-            from: "noreply@latexdex.com",
+            from: "noreply@retext.dev",
             to: email,
             subject: "Sign in OTP",
             html: `Your OTP is ${otp}`,
           });
         } else if (type === "email-verification") {
           await sendEmail({
-            from: "noreply@latexdex.com",
+            from: "noreply@retext.dev",
             to: email,
             subject: "Email Verification OTP",
             html: `Your OTP is ${otp}`,
           });
         } else {
           await sendEmail({
-            from: "noreply@latexdex.com",
+            from: "noreply@retext.dev",
             to: email,
             subject: "Password Reset OTP",
             html: `Your OTP is ${otp}`,

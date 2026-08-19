@@ -1,4 +1,4 @@
-# LaTeXdex
+# Retext
 
 ## Getting Started
 

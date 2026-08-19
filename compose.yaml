@@ -1,6 +1,6 @@
 services:
   texlive:
-    image: latexdex/texlive:latest
+    image: texlive/texlive:latest
     restart: always
     ports:
       - 5483:5483
