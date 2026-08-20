@@ -69,8 +69,11 @@
     "drizzle-orm": "^1.0.0-rc.4",
     "katex": "^0.18.4",
     "nodemailer": "^9.0.5",
+    "pdfjs-dist": "^6.2.108",
     "pg": "^8.23.0",
     "stripe": "^22.5.0",
+    "y-codemirror.next": "^0.3.6",
+    "y-webrtc": "^10.3.0",
     "zod": "^4.4.3"
   }
 }

@@ -3,6 +3,7 @@
   import "katex/dist/katex.min.css";
   import { ModeWatcher } from "mode-watcher";
 
+  import favicon from "#lib/assets/favicon.svg";
   import { Toaster } from "#lib/components/ui/sonner/index.ts";
   import * as Tooltip from "#lib/components/ui/tooltip/index.ts";
 
@@ -10,7 +11,7 @@
 </script>
 
 <svelte:head>
-  <link href="#lib/assets/favicon.svg" rel="icon" />
+  <link href={favicon} rel="icon" />
   <title>Retext</title>
   <meta
     name="description"

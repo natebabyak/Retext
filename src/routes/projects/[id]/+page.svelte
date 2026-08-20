@@ -1,48 +1,23 @@
 <script lang="ts">
-  import { EditorState } from "@codemirror/state";
   import ArrowUp from "@lucide/svelte/icons/arrow-up";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import Plus from "@lucide/svelte/icons/plus";
-  import { basicSetup, EditorView } from "codemirror";
-  import { latex } from "codemirror-lang-latex";
-  import katex from "katex";
-  import { onDestroy, onMount } from "svelte";
 
   import * as DropdownMenu from "#lib/components/ui/dropdown-menu/index.ts";
   import * as InputGroup from "#lib/components/ui/input-group/index.ts";
   import * as Resizable from "#lib/components/ui/resizable/index.ts";
+  import * as Tabs from "#lib/components/ui/tabs/index.ts";
   import * as Tooltip from "#lib/components/ui/tooltip/index.ts";
 
-  // eslint-disable-next-line
-  let editorContainer: HTMLDivElement;
-  let view: EditorView;
+  import type { PageProps } from "./$types";
+  import Editor from "./editor.svelte";
 
-  let editorContent = $state("");
-
-  const updateListener = EditorView.updateListener.of((update) => {
-    if (update.docChanged) {
-      editorContent = update.state.doc.toString();
-    }
-  });
-
-  let editorState = EditorState.create({
-    doc: "Start document",
-    extensions: [basicSetup, latex(), updateListener],
-  });
-
-  onMount(() => {
-    view = new EditorView({
-      state: editorState,
-      parent: editorContainer,
-    });
-  });
-
-  onDestroy(() => {
-    if (view) {
-      view.destroy();
-    }
-  });
+  let { data }: PageProps = $props();
 </script>
+
+<svelte:head>
+  <title>{data.project?.title} - Retext</title>
+</svelte:head>
 
 <Resizable.PaneGroup direction="horizontal">
   <Resizable.Pane minSize={20} collapsible>
@@ -97,8 +72,11 @@
   </Resizable.Pane>
   <Resizable.Handle />
   <Resizable.Pane>
-    <div bind:this={editorContainer}></div>
+    <Editor />
   </Resizable.Pane>
   <Resizable.Handle />
-  <Resizable.Pane>{@html katex.renderToString(editorContent)}</Resizable.Pane>
+  <Resizable.Pane></Resizable.Pane>
 </Resizable.PaneGroup>
+<footer class="border-t">
+  <Tabs.Root></Tabs.Root>
+</footer>

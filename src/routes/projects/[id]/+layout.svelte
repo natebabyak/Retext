@@ -1,8 +1,17 @@
 <script lang="ts">
-  import PanelLeftIcon from "@lucide/svelte/icons/panel-left";
+  import PanelLeft from "@lucide/svelte/icons/panel-left";
+  import Play from "@lucide/svelte/icons/play";
 
   import { Button } from "#lib/components/ui/button/index.ts";
+  import * as Kbd from "#lib/components/ui/kbd/index.ts";
   import * as Menubar from "#lib/components/ui/menubar/index.ts";
+  import * as Sidebar from "#lib/components/ui/sidebar/index.ts";
+  import * as Tooltip from "#lib/components/ui/tooltip/index.ts";
+
+  import ProjectFooter from "./project-footer.svelte";
+  import ProjectHeader from "./project-header.svelte";
+  import ProjectLeftSidebar from "./project-left-sidebar.svelte";
+  import ProjectRightSidebar from "./project-right-sidebar.svelte";
 
   let { children } = $props();
 </script>
@@ -12,38 +21,16 @@
   <meta name="description" content="TODO" />
 </svelte:head>
 
-<div class="flex h-screen w-full flex-col">
-  <header class="flex border-b p-2">
-    <Menubar.Root>
-      <Menubar.Menu>
-        <Menubar.Trigger>File</Menubar.Trigger>
-      </Menubar.Menu>
-      <Menubar.Menu>
-        <Menubar.Trigger>Edit</Menubar.Trigger>
-      </Menubar.Menu>
-      <Menubar.Menu>
-        <Menubar.Trigger>Insert</Menubar.Trigger>
-      </Menubar.Menu>
-      <Menubar.Menu>
-        <Menubar.Trigger>View</Menubar.Trigger>
-      </Menubar.Menu>
-      <Menubar.Menu>
-        <Menubar.Trigger>Format</Menubar.Trigger>
-      </Menubar.Menu>
-      <Menubar.Menu>
-        <Menubar.Trigger>Help</Menubar.Trigger>
-      </Menubar.Menu>
-    </Menubar.Root>
-  </header>
-  <div class="flex flex-1">
-    <aside class="w-12 border-r"></aside>
-    <main class="flex-1">
-      {@render children()}
-    </main>
-  </div>
-  <footer class="border-t p-1">
-    <Button size="icon-xs" variant="ghost">
-      <PanelLeftIcon />
-    </Button>
-  </footer>
+<div class="[--footer-height:calc(--spacing(12))] [--header-height:calc(--spacing(16))]">
+  <Sidebar.Provider class="flex flex-col">
+    <ProjectHeader />
+    <div class="flex flex-1">
+      <ProjectLeftSidebar />
+      <main class="flex-1 overflow-auto">
+        {@render children()}
+      </main>
+      <ProjectRightSidebar />
+    </div>
+    <ProjectFooter />
+  </Sidebar.Provider>
 </div>
