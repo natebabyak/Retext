@@ -20,6 +20,6 @@
 
 <ModeWatcher />
 <Toaster />
-<Tooltip.Provider>
+<Tooltip.Provider delayDuration={300}>
   {@render children()}
 </Tooltip.Provider>

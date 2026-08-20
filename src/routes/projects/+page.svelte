@@ -1,6 +1,8 @@
 <script lang="ts">
-  import SearchIcon from "@lucide/svelte/icons/search";
-  import SettingsIcon from "@lucide/svelte/icons/settings";
+  import { resolve } from "$app/paths";
+  import Ellipsis from "@lucide/svelte/icons/ellipsis";
+  import Search from "@lucide/svelte/icons/search";
+  import Settings from "@lucide/svelte/icons/settings";
   import {
     type ColumnDef,
     createTable,
@@ -12,6 +14,7 @@
   import * as Avatar from "#lib/components/ui/avatar/index.ts";
   import { Badge } from "#lib/components/ui/badge/index.ts";
   import { Button } from "#lib/components/ui/button/index.ts";
+  import * as DropdownMenu from "#lib/components/ui/dropdown-menu/index.ts";
   import * as Empty from "#lib/components/ui/empty/index.ts";
   import * as InputGroup from "#lib/components/ui/input-group/index.ts";
   import * as Item from "#lib/components/ui/item/index.ts";
@@ -87,9 +90,16 @@
 {/snippet}
 
 {#snippet actionsSnippet({ projectId }: { projectId: Project["id"] })}
-  <Button variant="ghost" size="sm" class="w-full">
-    <a href={`/projects/${projectId}`}>View</a>
-  </Button>
+  <DropdownMenu.Root>
+    <DropdownMenu.Trigger>
+      {#snippet child({ props })}
+        <Button href={resolve("/projects/[id]", { id: projectId })} size="icon" variant="ghost">
+          <Ellipsis />
+        </Button>
+      {/snippet}
+    </DropdownMenu.Trigger>
+    <DropdownMenu.Content></DropdownMenu.Content>
+  </DropdownMenu.Root>
 {/snippet}
 
 <svelte:head>
@@ -116,7 +126,7 @@
         <Sidebar.GroupContent>
           <Sidebar.Menu>
             <Sidebar.MenuItem>
-              <Sidebar.MenuButton>All</Sidebar.MenuButton>
+              <Sidebar.MenuButton isActive>All</Sidebar.MenuButton>
             </Sidebar.MenuItem>
             <Sidebar.MenuItem>
               <Sidebar.MenuButton>Owner</Sidebar.MenuButton>
@@ -143,7 +153,7 @@
     </Sidebar.Content>
     <Sidebar.Footer>
       <Sidebar.MenuButton>
-        <SettingsIcon />
+        <Settings />
         Settings
       </Sidebar.MenuButton>
     </Sidebar.Footer>
@@ -154,7 +164,7 @@
       <InputGroup.Root class="w-full max-w-sm">
         <InputGroup.Input placeholder="Search projects..." />
         <InputGroup.Addon>
-          <SearchIcon />
+          <Search />
         </InputGroup.Addon>
       </InputGroup.Root>
       <Table.Root>
