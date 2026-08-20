@@ -21,12 +21,12 @@
   <meta name="description" content="TODO" />
 </svelte:head>
 
-<div class="[--footer-height:calc(--spacing(12))] [--header-height:calc(--spacing(16))]">
+<div class="[--footer-height:calc(--spacing(8))] [--header-height:calc(--spacing(12))]">
   <Sidebar.Provider class="flex flex-col">
     <ProjectHeader />
     <div class="flex flex-1">
       <ProjectLeftSidebar />
-      <main class="flex-1 overflow-auto">
+      <main class="flex-1">
         {@render children()}
       </main>
       <ProjectRightSidebar />

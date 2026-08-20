@@ -1,5 +1,9 @@
 <script lang="ts">
+  import SettingsIcon from "@lucide/svelte/icons/settings";
+
   import * as Sidebar from "#lib/components/ui/sidebar/index.ts";
+
+  import SettingsDialog from "./settings-dialog.svelte";
 </script>
 
 <Sidebar.Root
@@ -10,5 +14,8 @@
 >
   <Sidebar.Header></Sidebar.Header>
   <Sidebar.Content></Sidebar.Content>
-  <Sidebar.Footer></Sidebar.Footer>
+  <Sidebar.Footer>
+    <SettingsDialog />
+  </Sidebar.Footer>
+  <Sidebar.Rail />
 </Sidebar.Root>
