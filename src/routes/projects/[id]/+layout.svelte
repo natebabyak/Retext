@@ -18,7 +18,7 @@
   <Sidebar.Provider class="flex flex-col">
     <ProjectHeader project={data.project} />
     <div class="flex flex-1">
-      <ProjectSidebar />
+      <ProjectSidebar files={data.project?.files ?? []} />
       <main class="flex-1">
         {@render children()}
       </main>

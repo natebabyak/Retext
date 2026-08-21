@@ -296,3 +296,5 @@ export const relations = defineRelations(
 );
 
 export * from "#lib/server/db/auth.schema.ts";
+
+export type ProjectFile = typeof projectFile.$inferSelect;
