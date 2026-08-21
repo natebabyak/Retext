@@ -1,6 +1,4 @@
 <script lang="ts">
-  import SettingsIcon from "@lucide/svelte/icons/settings";
-
   import * as Sidebar from "#lib/components/ui/sidebar/index.ts";
 
   import SettingsDialog from "./settings-dialog.svelte";

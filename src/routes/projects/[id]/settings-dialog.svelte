@@ -3,6 +3,7 @@
     CommandIcon,
     CreditCardIcon,
     EyeIcon,
+    PaletteIcon,
     PenIcon,
     SettingsIcon,
     SparklesIcon,
@@ -18,6 +19,10 @@
     {
       Icon: SparklesIcon,
       label: "AI",
+    },
+    {
+      Icon: PaletteIcon,
+      label: "Appearance",
     },
     {
       Icon: CreditCardIcon,

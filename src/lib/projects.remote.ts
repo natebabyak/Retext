@@ -1,8 +1,9 @@
 import { error } from "@sveltejs/kit";
-import z from "zod";
 import { db } from "#lib/server/db/drizzle.ts";
 import { project } from "#lib/server/db/schema.ts";
-import { command, getRequestEvent, query } from "$app/server";
+import { command, form, getRequestEvent, query } from "$app/server";
+import z from "zod";
+import { eq } from "drizzle-orm";
 
 export const createProject = command(async () => {
   const event = getRequestEvent();
@@ -11,15 +12,12 @@ export const createProject = command(async () => {
   const { user } = event.locals;
   if (!user) error(401, "Unauthorized");
 
-  const [{ id: newProjectId }] = await db
-    .insert(project)
-    .values({
-      ownerId: user.id,
-      title: "Untitled Project",
-    })
-    .returning();
+  await db.insert(project).values({
+    ownerId: user.id,
+    title: "Untitled Project",
+  });
 
-  return newProjectId;
+  await getProjects().refresh();
 });
 
 export const getProjects = query(async () => {
@@ -51,3 +49,26 @@ export const getProjects = query(async () => {
 
   return projects;
 });
+
+export const updateProjectTitle = form(
+  z.object({
+    id: z.uuidv7(),
+    title: z.string(),
+  }),
+  async ({ id, title }) => {
+    await db.update(project).set({ title }).where(eq(project.id, id));
+
+    await getProjects().refresh();
+  },
+);
+
+export const deleteProject = form(
+  z.object({
+    id: z.uuidv7(),
+  }),
+  async ({ id }) => {
+    await db.delete(project).where(eq(project.id, id));
+
+    await getProjects().refresh();
+  },
+);

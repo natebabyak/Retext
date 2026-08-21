@@ -1,7 +1,7 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
   import McpIcon from "@iconify-svelte/bxl/mcp";
-  import CircleIcon from "@lucide/svelte/icons/circle";
+  import { CircleIcon, PenIcon, PlusIcon } from "@lucide/svelte";
   import DatabaseIcon from "@lucide/svelte/icons/database";
   import LogOutIcon from "@lucide/svelte/icons/log-out";
   import PenToolIcon from "@lucide/svelte/icons/pen-tool";
@@ -20,7 +20,7 @@
 </script>
 
 <header class="flex items-center justify-between border-b p-4">
-  <a href="/">
+  <a href={resolve("/")}>
     <CircleIcon />
   </a>
   {#if !$session.data}
@@ -107,12 +107,19 @@
     </NavigationMenu.Root>
   {/if}
   {#if $session.data}
+    <Button href={resolve("/hub")} variant="outline" class="w-xs">
+      <SearchIcon />
+      Search RetextHub
+      <Kbd.Root class="ml-auto">&#x2318;K</Kbd.Root>
+    </Button>
     <div class="flex items-center gap-2">
-      <Button href="/projects" variant="outline">Projects</Button>
-      <Button href="/artifacts/search" variant="outline">
-        <SearchIcon />
-        Artifacts
-        <Kbd.Root>&#x2318;K</Kbd.Root>
+      <Button href={resolve("/projects")}>
+        <PlusIcon />
+        New Project
+      </Button>
+      <Button href={resolve("/projects")} variant="outline">
+        <PenIcon />
+        Editor
       </Button>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
