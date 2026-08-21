@@ -1,6 +1,8 @@
 <script lang="ts">
-  import { SettingsIcon } from "@lucide/svelte";
+  import { LogOutIcon, SettingsIcon, UserIcon } from "@lucide/svelte";
 
+  import { authClient } from "#lib/auth-client.ts";
+  import * as DropdownMenu from "#lib/components/ui/dropdown-menu/index.ts";
   import * as Sidebar from "#lib/components/ui/sidebar/index.ts";
 </script>
 
@@ -48,9 +50,22 @@
     </Sidebar.Group>
   </Sidebar.Content>
   <Sidebar.Footer>
-    <Sidebar.MenuButton>
-      <SettingsIcon />
-      Settings
-    </Sidebar.MenuButton>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        {#snippet child({ props })}
+          <Sidebar.MenuButton {...props}>
+            <UserIcon />
+          </Sidebar.MenuButton>
+        {/snippet}
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content align="end" side="right">
+        <DropdownMenu.Group>
+          <DropdownMenu.Item onclick={async () => await authClient.signOut()}>
+            <LogOutIcon />
+            Sign out
+          </DropdownMenu.Item>
+        </DropdownMenu.Group>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   </Sidebar.Footer>
 </Sidebar.Root>

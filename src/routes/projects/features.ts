@@ -1,32 +1,32 @@
 import {
   columnFacetingFeature,
   columnFilteringFeature,
-  columnVisibilityFeature,
   createFilteredRowModel,
-  filterFn_includesString,
+  filterFn_arrIncludesSome,
+  filterFn_inDateRange,
   globalFilteringFeature,
-  rowExpandingFeature,
   rowSelectionFeature,
   rowSortingFeature,
   sortFn_alphanumeric,
+  sortFn_datetime,
   tableFeatures,
 } from "@tanstack/svelte-table";
 
 export const features = tableFeatures({
   columnFacetingFeature,
   columnFilteringFeature,
-  columnVisibilityFeature,
   globalFilteringFeature,
-  rowExpandingFeature,
   rowSelectionFeature,
   rowSortingFeature,
   filteredRowModel: createFilteredRowModel(),
   sortedRowModel: createFilteredRowModel(),
   filterFns: {
-    includesString: filterFn_includesString,
+    arrIncludesSome: filterFn_arrIncludesSome,
+    inDateRange: filterFn_inDateRange,
   },
   sortFns: {
     alphanumeric: sortFn_alphanumeric,
+    datetime: sortFn_datetime,
   },
 });
 

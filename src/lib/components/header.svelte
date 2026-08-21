@@ -136,6 +136,6 @@
       </DropdownMenu.Root>
     </div>
   {:else}
-    <Button href={resolve("/login")} size="lg">Get Started</Button>
+    <Button href={resolve("/sign-in")} size="lg">Get Started</Button>
   {/if}
 </header>

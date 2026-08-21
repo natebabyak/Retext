@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import { ArrowRightIcon, ArrowUpRightIcon, CheckIcon } from "@lucide/svelte";
 
   import Footer from "#lib/components/footer.svelte";
@@ -11,29 +12,37 @@
 
   const FEATURES = [
     {
-      title: "Max Compile Time (s)",
-      description: "The longest",
-      free: "10",
-      pro: "300",
-      max: "300",
+      title: "Projects",
+      free: "100",
+      pro: "Unlimited",
+      max: "Unlimited",
     },
     {
-      title: "Max Compile Time (s)",
-      description: "The longest",
-      free: "10",
-      pro: "300",
-      max: "300",
+      title: "Compile timeout",
+      free: "10 s",
+      pro: "300 s",
+      max: "300 s",
+    },
+    {
+      title: "GitHub integration",
+      free: true,
+      pro: true,
+      max: true,
+    },
+    {
+      title: "Templates via RetextHub",
+      free: true,
+      pro: true,
+      max: true,
     },
     {
       title: "Collaborators",
-      description: "Number of collaborators allowed per project",
       free: "Up to 5",
       pro: "Up to 10",
       max: "Unlimited",
     },
   ] satisfies Array<{
     title: string;
-    description: string;
     free: boolean | string;
     pro: boolean | string;
     max: boolean | string;
@@ -49,7 +58,7 @@
     Retext is a real-time, AI-native editor for LaTeX and markdown built for speed.
   </p>
   <div class="flex gap-2">
-    <Button href="/sign-up" size="lg">
+    <Button href={resolve("/sign-in")} size="lg">
       Get Started
       <ArrowRightIcon />
     </Button>
@@ -58,7 +67,7 @@
 </section>
 <Separator />
 <section>
-  <div class="flex flex-row">
+  <div class="flex">
     <Item.Root>
       <Item.Content>
         <Item.Title>Fast</Item.Title>
@@ -103,21 +112,12 @@
     </Table.Header>
     <Table.Body>
       {#each FEATURES as feature}
-        <HoverCard.Root>
-          <HoverCard.Trigger>
-            {#snippet child({ props })}
-              <Table.Row {...props}>
-                <Table.Cell>{feature.title}</Table.Cell>
-                <Table.Cell>{feature.free}</Table.Cell>
-                <Table.Cell>{feature.pro}</Table.Cell>
-                <Table.Cell>{feature.max}</Table.Cell>
-              </Table.Row>
-            {/snippet}
-          </HoverCard.Trigger>
-          <HoverCard.Content>
-            {feature.description}
-          </HoverCard.Content>
-        </HoverCard.Root>
+        <Table.Row>
+          <Table.Cell>{feature.title}</Table.Cell>
+          <Table.Cell>{feature.free}</Table.Cell>
+          <Table.Cell>{feature.pro}</Table.Cell>
+          <Table.Cell>{feature.max}</Table.Cell>
+        </Table.Row>
       {/each}
     </Table.Body>
   </Table.Root>

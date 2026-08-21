@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
+
   import Footer from "#lib/components/footer.svelte";
   import Header from "#lib/components/header.svelte";
   import { Button, type ButtonVariant } from "#lib/components/ui/button/index.ts";
@@ -19,7 +21,7 @@
       title: "Free",
       description: "Get started with Retext",
       price: "0",
-      href: "/sign-up",
+      href: resolve("/sign-in"),
       variant: "outline",
       buttonText: "Get started for free",
       features: ["10 projects"],

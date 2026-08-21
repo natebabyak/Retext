@@ -1,24 +1,40 @@
 import { error } from "@sveltejs/kit";
 import { db } from "#lib/server/db/drizzle.ts";
-import { project } from "#lib/server/db/schema.ts";
+import { project, projectFile } from "#lib/server/db/schema.ts";
 import { command, form, getRequestEvent, query } from "$app/server";
 import z from "zod";
 import { eq } from "drizzle-orm";
 
-export const createProject = command(async () => {
-  const event = getRequestEvent();
-  if (!event) error(500, "Internal Server Error");
+export const createProject = command(
+  z.object({
+    title: z.string(),
+  }),
+  async ({ title }) => {
+    const event = getRequestEvent();
+    if (!event) error(500, "Internal Server Error");
 
-  const { user } = event.locals;
-  if (!user) error(401, "Unauthorized");
+    const { user } = event.locals;
+    if (!user) error(401, "Unauthorized");
 
-  await db.insert(project).values({
-    ownerId: user.id,
-    title: "Untitled Project",
-  });
+    await db.transaction(async (tx) => {
+      const [{ id: projectId }] = await tx
+        .insert(project)
+        .values({
+          ownerId: user.id,
+          title,
+        })
+        .returning();
 
-  await getProjects().refresh();
-});
+      await tx.insert(projectFile).values({
+        projectId,
+        path: "main.tex",
+        text: "\\documentclass{article}\n\n\\begin{document}\n\n\\section{Hello, World!}\n\n\\end{document}",
+      });
+    });
+
+    await getProjects().refresh();
+  },
+);
 
 export const getProjects = query(async () => {
   const event = getRequestEvent();
