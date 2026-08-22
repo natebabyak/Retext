@@ -11,6 +11,7 @@
 
   import type { PageProps } from "./$types";
   import Editor from "./editor.svelte";
+  import Pdf from "./pdf.svelte";
 
   let { data }: PageProps = $props();
 </script>
@@ -20,6 +21,7 @@
 </svelte:head>
 
 <Resizable.PaneGroup direction="horizontal">
+  <!--
   <Resizable.Pane minSize={20} collapsible>
     <div class="p-2">
       <InputGroup.Root>
@@ -71,12 +73,12 @@
     </div>
   </Resizable.Pane>
   <Resizable.Handle />
+  -->
   <Resizable.Pane>
     <Editor />
   </Resizable.Pane>
   <Resizable.Handle />
-  <Resizable.Pane></Resizable.Pane>
+  <Resizable.Pane>
+    <Pdf src={null} />
+  </Resizable.Pane>
 </Resizable.PaneGroup>
-<footer class="border-t">
-  <Tabs.Root></Tabs.Root>
-</footer>

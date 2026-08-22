@@ -1,11 +1,10 @@
 services:
   texlive:
+    container_name: retext-texlive
     image: texlive/texlive:latest
-    restart: always
-    ports:
-      - 5483:5483
 
   db:
+    container_name: retext-db
     image: postgres:18-alpine
     restart: always
     ports:

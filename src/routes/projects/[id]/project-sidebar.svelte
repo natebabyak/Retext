@@ -81,12 +81,18 @@
         </Sidebar.MenuItem>
       </Sidebar.Menu>
     </Sidebar.Header>
+    <Sidebar.Content />
+    <Sidebar.Footer>
+      <SettingsDialog />
+    </Sidebar.Footer>
   </Sidebar.Root>
   <Sidebar.Root collapsible="none" class="flex-1">
-    <Sidebar.Header></Sidebar.Header>
     <Sidebar.Content>
       <Sidebar.Group>
-        <Sidebar.GroupLabel>Project</Sidebar.GroupLabel>
+        <Sidebar.GroupLabel>Changes</Sidebar.GroupLabel>
+      </Sidebar.Group>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Files</Sidebar.GroupLabel>
         <Sidebar.GroupContent>
           <Sidebar.Menu>
             {#each Object.entries(tree) as node}
@@ -96,9 +102,6 @@
         </Sidebar.GroupContent>
       </Sidebar.Group>
     </Sidebar.Content>
-    <Sidebar.Footer>
-      <SettingsDialog />
-    </Sidebar.Footer>
   </Sidebar.Root>
 </Sidebar.Root>
 

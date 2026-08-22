@@ -4,7 +4,6 @@
     ClipboardIcon,
     CopyIcon,
     LogOutIcon,
-    PenToolIcon,
     Redo2Icon,
     ScissorsIcon,
     Undo2Icon,
