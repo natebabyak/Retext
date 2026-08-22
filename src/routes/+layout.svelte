@@ -12,10 +12,7 @@
 <svelte:head>
   <link href="/assets/favicon.svg" rel="icon" />
   <title>Texfolia</title>
-  <meta
-    name="description"
-    content="Texfolia is the collaborative markup platform for humans and agents."
-  />
+  <meta name="description" content="Texfolia is the markup platform for humans and agents." />
 </svelte:head>
 
 <ModeWatcher />

@@ -11,21 +11,24 @@ import {
   unique,
   uuid,
 } from "drizzle-orm/pg-core";
-import { ARTIFACT_TYPES } from "#lib/constants.ts";
+import {
+  ARTIFACT_TYPES,
+  ARTIFACT_VISIBILITIES,
+  PROJECT_COLLABORATOR_ROLES,
+} from "#lib/constants.ts";
 import { user } from "#lib/server/db/auth.schema.ts";
 
 export const artifactType = pgEnum("artifact_type", ARTIFACT_TYPES);
 
-export const artifactVisibility = pgEnum("artifact_visibility", [
-  "private",
-  "public",
-  "unlisted",
-]);
+export const artifactVisibility = pgEnum(
+  "artifact_visibility",
+  ARTIFACT_VISIBILITIES,
+);
 
-export const projectCollaboratorRole = pgEnum("project_collaborator_role", [
-  "editor",
-  "viewer",
-]);
+export const projectCollaboratorRole = pgEnum(
+  "project_collaborator_role",
+  PROJECT_COLLABORATOR_ROLES,
+);
 
 export const artifact = snakeCase.table("artifact", {
   id: uuid()

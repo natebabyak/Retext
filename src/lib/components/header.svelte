@@ -1,7 +1,7 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
   import McpIcon from "@iconify-svelte/bxl/mcp";
-  import { CircleIcon, PenIcon, PlusIcon } from "@lucide/svelte";
+  import { BoxesIcon, CircleIcon, PenIcon, PlusIcon, SparklesIcon } from "@lucide/svelte";
   import DatabaseIcon from "@lucide/svelte/icons/database";
   import LogOutIcon from "@lucide/svelte/icons/log-out";
   import PenToolIcon from "@lucide/svelte/icons/pen-tool";
@@ -107,30 +107,42 @@
     </NavigationMenu.Root>
   {/if}
   {#if $session.data}
-    <Button href={resolve("/hub")} variant="outline" class="w-xs">
+    {let user = $session.data.user}
+    <Button href={resolve("/hub")} variant="outline" class="w-full max-w-xs">
       <SearchIcon />
-      Search TexfoliaHub
+      Search Texfolia
       <Kbd.Root class="ml-auto">&#x2318;K</Kbd.Root>
     </Button>
     <div class="flex items-center gap-2">
-      <Button href={resolve("/projects")}>
-        <PlusIcon />
-        New Project
+      <Button href={resolve("/hub")} variant="outline">
+        <SearchIcon />
+        Hub
       </Button>
       <Button href={resolve("/projects")} variant="outline">
-        <PenIcon />
-        Editor
+        <BoxesIcon />
+        Projects
       </Button>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <Avatar.Root>
-            <Avatar.Image src={$session.data.user.image} alt="@shadcn" />
-            <Avatar.Fallback>{$session.data.user.name.charAt(0)}</Avatar.Fallback>
-          </Avatar.Root>
+          {#snippet child({ props })}
+            <Avatar.Root {...props}>
+              <Avatar.Image src={user.image} alt={`@${user.name}`} />
+              <Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
+            </Avatar.Root>
+          {/snippet}
         </DropdownMenu.Trigger>
-        <DropdownMenu.Content>
-          <DropdownMenu.Item onclick={() => authClient.signOut()}>
-            <LogOutIcon /> Sign out
+        <DropdownMenu.Content align="end" side="bottom">
+          <DropdownMenu.Item>
+            {#snippet child({ props })}
+              <a {...props} href={resolve("/pricing")}>
+                <SparklesIcon />
+                Upgrade
+              </a>
+            {/snippet}
+          </DropdownMenu.Item>
+          <DropdownMenu.Item onclick={async () => await authClient.signOut()}>
+            <LogOutIcon />
+            Sign out
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>

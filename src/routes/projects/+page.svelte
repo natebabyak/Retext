@@ -16,7 +16,6 @@
   import * as Empty from "#lib/components/ui/empty/index.ts";
   import * as InputGroup from "#lib/components/ui/input-group/index.ts";
   import * as Sidebar from "#lib/components/ui/sidebar/index.ts";
-  import { Skeleton } from "#lib/components/ui/skeleton/index.ts";
   import * as Table from "#lib/components/ui/table/index.ts";
   import { getProjects } from "#lib/projects.remote.ts";
 
@@ -25,13 +24,13 @@
   import { features } from "./features";
   import ProjectsSidebar from "./projects-sidebar.svelte";
 
-  const projectsQuery = getProjects();
+  let projects = $derived(await getProjects());
 
   const table = createTable({
     features,
     columns,
     get data() {
-      return projectsQuery.current ?? [];
+      return projects;
     },
     initialState: {
       sorting: [
@@ -65,7 +64,7 @@
           </InputGroup.Addon>
         </InputGroup.Root>
         {#key table.getSelectedRowIds().length}
-          {@const selectedRows = table.getSelectedRowIds().length}
+          {let selectedRows = table.getSelectedRowIds().length}
           <div transition:fly={{ duration: 500, easing: backOut, x: 8 }}>
             {#if selectedRows > 0}
               <ButtonGroup.Root>
@@ -88,9 +87,7 @@
           </div>
         {/key}
       </div>
-      {#if projectsQuery.error}
-        <Empty.Root></Empty.Root>
-      {:else}
+      <svelte:boundary>
         <Table.Root>
           <Table.Caption>
             {table.getFilteredSelectedRowModel().rows.length}
@@ -110,54 +107,44 @@
             {/each}
           </Table.Header>
           <Table.Body>
-            {#if projectsQuery.loading && !projectsQuery.current}
-              {#each { length: 10 } as _}
-                <Table.Row>
-                  <Table.Cell colspan={4}>
-                    <Skeleton class="h-4 w-full" />
+            {#each table.getRowModel().rows as row (row.id)}
+              <Table.Row>
+                {#each row.getAllCells() as cell (cell.id)}
+                  <Table.Cell>
+                    <FlexRender {cell} />
                   </Table.Cell>
-                </Table.Row>
-              {/each}
+                {/each}
+              </Table.Row>
             {:else}
-              {#each table.getRowModel().rows as row (row.id)}
-                <Table.Row>
-                  {#each row.getAllCells() as cell (cell.id)}
-                    <Table.Cell>
-                      <FlexRender {cell} />
-                    </Table.Cell>
-                  {/each}
-                </Table.Row>
-              {:else}
-                <Table.Row>
-                  <Table.Cell colspan={4}>
-                    <Empty.Root>
-                      <Empty.Header>
-                        <Empty.Media variant="icon">
-                          <FileXIcon />
-                        </Empty.Media>
-                        <Empty.Title>No Projects Found</Empty.Title>
-                        <Empty.Description>
-                          You haven't created any projects yet. Get started by creating your first
-                          project.
-                        </Empty.Description>
-                      </Empty.Header>
-                      <Empty.Content>
-                        <div class="flex gap-2">
-                          <CreateProjectDialog />
-                          <Button variant="outline">
-                            <FunnelXIcon />
-                            Reset Filters
-                          </Button>
-                        </div>
-                      </Empty.Content>
-                    </Empty.Root>
-                  </Table.Cell>
-                </Table.Row>
-              {/each}
-            {/if}
+              <Table.Row>
+                <Table.Cell colspan={4}>
+                  <Empty.Root>
+                    <Empty.Header>
+                      <Empty.Media variant="icon">
+                        <FileXIcon />
+                      </Empty.Media>
+                      <Empty.Title>No Projects Found</Empty.Title>
+                      <Empty.Description>
+                        You haven't created any projects yet. Get started by creating your first
+                        project.
+                      </Empty.Description>
+                    </Empty.Header>
+                    <Empty.Content>
+                      <div class="flex gap-2">
+                        <CreateProjectDialog />
+                        <Button variant="outline">
+                          <FunnelXIcon />
+                          Reset Filters
+                        </Button>
+                      </div>
+                    </Empty.Content>
+                  </Empty.Root>
+                </Table.Cell>
+              </Table.Row>
+            {/each}
           </Table.Body>
         </Table.Root>
-      {/if}
+      </svelte:boundary>
     </main>
   </Sidebar.Inset>
 </Sidebar.Provider>

@@ -2,7 +2,12 @@ import { error } from "@sveltejs/kit";
 import z from "zod";
 import { ARTIFACT_TYPES } from "#lib/constants.ts";
 import { db } from "#lib/server/db/drizzle.ts";
-import { artifact, artifactsToTags } from "#lib/server/db/schema.ts";
+import {
+  artifact,
+  artifactFile,
+  artifactsToTags,
+  artifactTag,
+} from "#lib/server/db/schema.ts";
 import { form, getRequestEvent, query } from "$app/server";
 
 export const createArtifact = form(
@@ -37,7 +42,7 @@ export const createArtifact = form(
     const [{ artifactId }] = await db
       .insert(artifact)
       .values({
-        userId: user.id,
+        authorId: user.id,
         title,
         description,
         type,
@@ -46,7 +51,7 @@ export const createArtifact = form(
         artifactId: artifact.id,
       });
 
-    await db.insert(file).values(
+    await db.insert(artifactFile).values(
       files.map(({ path, content }) => ({
         artifactId,
         path,
@@ -55,7 +60,14 @@ export const createArtifact = form(
     );
 
     if (tags) {
-      await db.insert(tag).values(tags).onConflictDoNothing();
+      await db
+        .insert(artifactTag)
+        .values(
+          tags.map(({ content }) => ({
+            text: content,
+          })),
+        )
+        .onConflictDoNothing();
 
       await db.insert(artifactsToTags).values(
         tags.map(({ content }) => ({

@@ -27,9 +27,9 @@
       onBlur: schema,
     },
     onSubmit: async ({ value }) => {
-      const title = value.title || "Untitled Project";
-
-      await createProject({ title });
+      await createProject({
+        title: value.title || "Untitled Project",
+      });
 
       open = false;
     },

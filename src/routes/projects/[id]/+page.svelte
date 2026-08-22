@@ -1,23 +1,24 @@
 <script lang="ts">
+  import { page } from "$app/state";
   import ArrowUp from "@lucide/svelte/icons/arrow-up";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import Plus from "@lucide/svelte/icons/plus";
 
-  import * as DropdownMenu from "#lib/components/ui/dropdown-menu/index.ts";
-  import * as InputGroup from "#lib/components/ui/input-group/index.ts";
   import * as Resizable from "#lib/components/ui/resizable/index.ts";
-  import * as Tabs from "#lib/components/ui/tabs/index.ts";
-  import * as Tooltip from "#lib/components/ui/tooltip/index.ts";
+  import { getProject } from "#lib/projects.remote.ts";
 
-  import type { PageProps } from "./$types";
   import Editor from "./editor.svelte";
   import Pdf from "./pdf.svelte";
 
-  let { data }: PageProps = $props();
+  let project = $derived(
+    await getProject({
+      projectId: page.params.id,
+    }),
+  );
 </script>
 
 <svelte:head>
-  <title>{data.project?.title} - Texfolia</title>
+  <title>{project.title} - Texfolia</title>
 </svelte:head>
 
 <Resizable.PaneGroup direction="horizontal">

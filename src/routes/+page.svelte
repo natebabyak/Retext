@@ -52,10 +52,11 @@
 <Header />
 <section class="space-y-4">
   <h1 class="max-w-3xl text-5xl leading-tight font-medium tracking-tighter text-balance">
-    The collaborative markup platform for humans and agents
+    The markup platform where humans and agents work together
   </h1>
   <p class="text-muted-foreground text-balance">
-    Texfolia is a real-time, AI-native editor for LaTeX and markdown built for speed.
+    Texfolia is a blazingly fast, collaborative, real-time, agentic editor and hub for LaTeX and
+    markdown
   </p>
   <div class="flex gap-2">
     <Button href={resolve("/sign-in")} size="lg">

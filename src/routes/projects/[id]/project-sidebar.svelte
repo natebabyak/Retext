@@ -6,43 +6,32 @@
     FolderOpenIcon,
     GitBranchIcon,
     SearchIcon,
+    type LucideIcon,
   } from "@lucide/svelte";
 
   import * as Collapsible from "#lib/components/ui/collapsible/index.ts";
+  import * as ContextMenu from "#lib/components/ui/context-menu/index.ts";
   import * as Sidebar from "#lib/components/ui/sidebar/index.ts";
-  import type { ProjectFile } from "#lib/server/db/schema.ts";
 
   import SettingsDialog from "./settings-dialog.svelte";
+  import { getTab, setTab, type Tab } from "./tab.svelte";
 
-  let { files }: { files: ProjectFile[] } = $props();
-
-  type FileTree = {
-    [key: string]: FileTree | null;
-  };
-
-  type TreeNode = [name: string, children: FileTree | null];
-
-  let tree = $derived.by(() => {
-    const root: FileTree = {};
-
-    for (const path of files.map((f) => f.path)) {
-      const parts = path.split("/");
-      let current = root;
-
-      parts.forEach((part, index) => {
-        const isFile = index === parts.length - 1;
-
-        if (isFile) {
-          current[part] = current[part] || null;
-        } else {
-          current[part] = current[part] || {};
-          current = current[part];
-        }
-      });
-    }
-
-    return root;
-  });
+  const TABS = [
+    {
+      Icon: FolderIcon,
+      label: "Files",
+      value: "files",
+    },
+    {
+      Icon: GitBranchIcon,
+      label: "Source Control",
+      value: "sourceControl",
+    },
+  ] satisfies Array<{
+    Icon: LucideIcon;
+    label: string;
+    value: Tab;
+  }>;
 </script>
 
 <Sidebar.Root
@@ -52,33 +41,21 @@
   <Sidebar.Root collapsible="none" class="w-[calc(var(--sidebar-width-icon)+1px)] border-e">
     <Sidebar.Header>
       <Sidebar.Menu>
-        <Sidebar.MenuItem>
-          <Sidebar.MenuButton tooltipContentProps={{ hidden: false }}>
-            {#snippet tooltipContent()}
-              Project Structure
-            {/snippet}
-            <FolderOpenIcon />
-            Project Structure
-          </Sidebar.MenuButton>
-        </Sidebar.MenuItem>
-        <Sidebar.MenuItem>
-          <Sidebar.MenuButton tooltipContentProps={{ hidden: false }}>
-            {#snippet tooltipContent()}
-              Search
-            {/snippet}
-            <SearchIcon />
-            Search
-          </Sidebar.MenuButton>
-        </Sidebar.MenuItem>
-        <Sidebar.MenuItem>
-          <Sidebar.MenuButton tooltipContentProps={{ hidden: false }}>
-            {#snippet tooltipContent()}
-              Source Control
-            {/snippet}
-            <GitBranchIcon />
-            Source Control
-          </Sidebar.MenuButton>
-        </Sidebar.MenuItem>
+        {#each TABS as { Icon, label, value }}
+          <Sidebar.MenuItem>
+            <Sidebar.MenuButton
+              isActive={value === getTab()}
+              onclick={() => setTab(value)}
+              tooltipContentProps={{ hidden: false }}
+              class="data-active:bg-primary data-active:text-primary-foreground"
+            >
+              {#snippet tooltipContent()}
+                {label}
+              {/snippet}
+              <Icon />
+            </Sidebar.MenuButton>
+          </Sidebar.MenuItem>
+        {/each}
       </Sidebar.Menu>
     </Sidebar.Header>
     <Sidebar.Content />
@@ -89,24 +66,32 @@
   <Sidebar.Root collapsible="none" class="flex-1">
     <Sidebar.Content>
       <Sidebar.Group>
-        <Sidebar.GroupLabel>Changes</Sidebar.GroupLabel>
-      </Sidebar.Group>
-      <Sidebar.Group>
-        <Sidebar.GroupLabel>Files</Sidebar.GroupLabel>
-        <Sidebar.GroupContent>
-          <Sidebar.Menu>
-            {#each Object.entries(tree) as node}
-              {@render Tree({ node })}
-            {/each}
-          </Sidebar.Menu>
-        </Sidebar.GroupContent>
+        {#if getTab() === "files"}
+          <Sidebar.GroupLabel>Files</Sidebar.GroupLabel>
+          <ContextMenu.Root>
+            <ContextMenu.Trigger>
+              {#snippet child({ props })}
+                <Sidebar.GroupContent {...props}>
+                  <Sidebar.Menu>
+                    {#each Object.entries([]) as node}
+                      {@render Tree({ node })}
+                    {/each}
+                  </Sidebar.Menu>
+                </Sidebar.GroupContent>
+              {/snippet}
+            </ContextMenu.Trigger>
+            <ContextMenu.Content>
+              <ContextMenu.Item>New File</ContextMenu.Item>
+            </ContextMenu.Content>
+          </ContextMenu.Root>
+        {/if}
       </Sidebar.Group>
     </Sidebar.Content>
   </Sidebar.Root>
 </Sidebar.Root>
 
-{#snippet Tree({ node }: { node: TreeNode })}
-  {@const [name, children] = node}
+{#snippet Tree({ node })}
+  {let [name, children] = node}
   {#if !children}
     <Sidebar.MenuButton
       isActive={name === "button.svelte"}

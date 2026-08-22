@@ -59,7 +59,8 @@ export const columns = columnHelper.columns([
     id: "actions",
     cell: ({ row }) =>
       renderComponent(ActionsCell, {
-        id: row.original.id,
+        projectId: row.original.id,
+        projectTitle: row.original.title,
       }),
   }),
 ]);

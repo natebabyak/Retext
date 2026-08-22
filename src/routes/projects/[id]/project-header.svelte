@@ -15,8 +15,13 @@
   import * as Kbd from "#lib/components/ui/kbd/index.ts";
   import * as Menubar from "#lib/components/ui/menubar/index.ts";
   import * as Tooltip from "#lib/components/ui/tooltip/index.ts";
+  import type { getProject } from "#lib/projects.remote.ts";
 
-  let { project } = $props();
+  interface ProjectHeaderProps {
+    project: Awaited<ReturnType<typeof getProject>>;
+  }
+
+  let { project }: ProjectHeaderProps = $props();
 
   let open = $state(false);
 </script>
