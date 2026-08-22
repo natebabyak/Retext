@@ -12,7 +12,7 @@
       <Sidebar.GroupContent>
         <Sidebar.Menu>
           <Sidebar.MenuItem>
-            <Sidebar.MenuButton>Retext</Sidebar.MenuButton>
+            <Sidebar.MenuButton>Texfolia</Sidebar.MenuButton>
           </Sidebar.MenuItem>
         </Sidebar.Menu>
       </Sidebar.GroupContent>

@@ -30,7 +30,7 @@
       max: true,
     },
     {
-      title: "Templates via RetextHub",
+      title: "Templates via TexfoliaHub",
       free: true,
       pro: true,
       max: true,
@@ -55,7 +55,7 @@
     The collaborative markup platform for humans and agents
   </h1>
   <p class="text-muted-foreground text-balance">
-    Retext is a real-time, AI-native editor for LaTeX and markdown built for speed.
+    Texfolia is a real-time, AI-native editor for LaTeX and markdown built for speed.
   </p>
   <div class="flex gap-2">
     <Button href={resolve("/sign-in")} size="lg">
@@ -72,7 +72,7 @@
       <Item.Content>
         <Item.Title>Fast</Item.Title>
         <Item.Description>
-          Retext is built from the ground up to provide satisfyingly fast performance.
+          Texfolia is built from the ground up to provide satisfyingly fast performance.
         </Item.Description>
         <Item.Footer>
           <Button size="xs" variant="link" class="pl-0">
@@ -93,7 +93,7 @@
       <Item.Content>
         <Item.Title>Performance</Item.Title>
         <Item.Description>
-          Retext is built from the ground up to provide satisfyingly fast performance.
+          Texfolia is built from the ground up to provide satisfyingly fast performance.
         </Item.Description>
       </Item.Content>
     </Item.Root>

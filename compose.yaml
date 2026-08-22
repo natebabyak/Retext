@@ -1,10 +1,10 @@
 services:
   texlive:
-    container_name: retext-texlive
+    container_name: texfolia-texlive
     image: texlive/texlive:latest
 
   db:
-    container_name: retext-db
+    container_name: texfolia-db
     image: postgres:18-alpine
     restart: always
     ports:

@@ -1,4 +1,4 @@
-# Retext
+# Texfolia
 
 ## Getting Started
 

@@ -5,7 +5,7 @@
 <footer class="border-t p-4">
   <div class="grid grid-cols-4">
     <div>
-      <p>Retext</p>
+      <p>Texfolia</p>
       <nav>
         <ul>
           <li>
@@ -44,5 +44,5 @@
       </nav>
     </div>
   </div>
-  <p>&copy; Retext 2026. All rights reserved.</p>
+  <p>&copy; Texfolia 2026. All rights reserved.</p>
 </footer>

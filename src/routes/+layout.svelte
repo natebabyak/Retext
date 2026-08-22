@@ -3,7 +3,6 @@
   import "katex/dist/katex.min.css";
   import { ModeWatcher } from "mode-watcher";
 
-  import favicon from "#lib/assets/favicon.svg";
   import { Toaster } from "#lib/components/ui/sonner/index.ts";
   import * as Tooltip from "#lib/components/ui/tooltip/index.ts";
 
@@ -11,16 +10,16 @@
 </script>
 
 <svelte:head>
-  <link href={favicon} rel="icon" />
-  <title>Retext</title>
+  <link href="/assets/favicon.svg" rel="icon" />
+  <title>Texfolia</title>
   <meta
     name="description"
-    content="Retext is the AI-native markup platform. Built by humans and agents; for humans and agents."
+    content="Texfolia is the collaborative markup platform for humans and agents."
   />
 </svelte:head>
 
 <ModeWatcher />
 <Toaster />
 <Tooltip.Provider>
-  {@render children?.()}
+  {@render children()}
 </Tooltip.Provider>

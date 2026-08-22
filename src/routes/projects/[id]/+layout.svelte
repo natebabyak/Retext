@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-  <title>My Projects - Retext</title>
+  <title>My Projects - Texfolia</title>
   <meta name="description" content="TODO" />
 </svelte:head>
 

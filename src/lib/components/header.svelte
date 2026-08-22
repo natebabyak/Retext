@@ -109,7 +109,7 @@
   {#if $session.data}
     <Button href={resolve("/hub")} variant="outline" class="w-xs">
       <SearchIcon />
-      Search RetextHub
+      Search TexfoliaHub
       <Kbd.Root class="ml-auto">&#x2318;K</Kbd.Root>
     </Button>
     <div class="flex items-center gap-2">

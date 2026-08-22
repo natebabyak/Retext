@@ -17,7 +17,7 @@
 </script>
 
 <svelte:head>
-  <title>{data.project?.title} - Retext</title>
+  <title>{data.project?.title} - Texfolia</title>
 </svelte:head>
 
 <Resizable.PaneGroup direction="horizontal">

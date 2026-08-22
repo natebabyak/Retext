@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
   <mask id="m">
 <rect x="0" y="9.6" width="4.8" height="4.8" /> <rect x="4.8" y="4.8" width="4.8" height="4.8" /> <rect x="9.6" y="9.6" width="4.8" height="4.8" /> <rect x="14.4" y="14.4" width="4.8" height="4.8" /> <rect x="19.2" y="9.6" width="4.8" height="4.8" />  </mask>
-  <circle cx="12" cy="12" r="12" fill="currentColor" mask="url(#m)"/>
+  <circle cx="12" cy="12" r="12" fill="black" mask="url(#m)"/>
 </svg>

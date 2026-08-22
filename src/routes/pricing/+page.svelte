@@ -19,7 +19,7 @@
   const PLANS = [
     {
       title: "Free",
-      description: "Get started with Retext",
+      description: "Get started with Texfolia",
       price: "0",
       href: resolve("/sign-in"),
       variant: "outline",
